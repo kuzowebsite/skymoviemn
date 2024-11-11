@@ -52,13 +52,14 @@ export default function MovieDetails() {
   const searchSuffix = "site:filmyzilla.com.by";
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("playlist").includes(id))) {
+    const playlist = JSON.parse(localStorage.getItem("playlist")) || []; // default to an empty array if null
+    if (playlist.includes(id)) {
       setHasMovie(true);
     } else {
       setHasMovie(false);
     }
   }, [id]);
-
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
