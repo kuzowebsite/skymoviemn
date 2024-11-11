@@ -211,7 +211,7 @@ export default function MovieDetails() {
       >
         <div className="relative flex justify-center items-center rounded-lg bg-cover bg-center shadow-lg">
           <img
-            className=" relative z-10 lg:w-2/3 h-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg"
+            className=" relative z-10 lg:w-2/3 h-auto w-full md:max-w-md lg:max-w-lg rounded-lg"
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
             alt={movie.title}
           />
