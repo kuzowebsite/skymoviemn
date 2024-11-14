@@ -10,7 +10,7 @@ const Header = () => {
       <NavLink to={`/`}>
         <div>
           <h1 className="  text-zinc-50 font-semibold ">
-            <span className=" px-3 py-1 bg-zinc-50 text-zinc-900 rounded-l-md">
+            <span className=" px-3 py-1 bg-teal-500 text-teal-100 rounded-l-md">
               R
             </span>
             <span className=" ml-1 px-3 py-1 bg-zinc-50 text-zinc-900 rounded-r-md">

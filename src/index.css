@@ -82,10 +82,6 @@ body {
 ::-webkit-scrollbar-track {
   background-color: transparent; /* Color of the scroll track */
 }
-.hero {
-  background-color: #09090b;
-  background-image: url("https://img.freepik.com/free-vector/abstract-background-gradient-modern-design_677411-3059.jpg?t=st=1731568063~exp=1731571663~hmac=e5d268ea3fd81b346d987cad290b95afc2d72b9f453db19e841c3c7efcfd1d08&w=1060");
-}
 
 footer {
   top: 100%;
