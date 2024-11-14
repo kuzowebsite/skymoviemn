@@ -8,8 +8,7 @@ const Landing = () => {
         Find Movies
       </h1>
       <p className="text-sm sm:text-base md:text-lg lg:text-xl text-zinc-400">
-        Free Movie Downloads | Download Movies Online | Movie Downloader |
-        Best Movie Download Site
+      80% Free Movie Downloads | Watch Trailers Online | Best Site for Movie Downloads
       </p>
     </div>
   </section>

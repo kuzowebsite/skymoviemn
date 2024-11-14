@@ -18,7 +18,7 @@ export default function MovieCarousel() {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    const apiKey = "4c1eef5a8d388386187a3426bc2345be";
+    const apiKey = import.meta.env.VITE_API_KEY;
     const endpoints = [
       { key: "popular", url: `/movie/popular` },
       { key: "topRated", url: `/movie/top_rated` },

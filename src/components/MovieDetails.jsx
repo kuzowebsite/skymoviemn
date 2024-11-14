@@ -6,6 +6,7 @@ import { FaPlay } from "react-icons/fa";
 import { FaShareAlt } from "react-icons/fa";
 import { MdBookmarkAdded } from "react-icons/md";
 import { MdBookmark } from "react-icons/md";
+
 // import { MdBookmarkBorder } from "react-icons/md";
 
 import { useParams } from "react-router-dom";
@@ -33,14 +34,13 @@ import { getDominantColor } from "@/lib/Color";
 import { getTextColorForBackground } from "@/lib/TextColor";
 import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
-
-// import { CastSlider } from "./Cast";
+import { CastCarousel } from "./CastCarousel";
 
 export default function MovieDetails() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [relatedMovies, setRelatedMovies] = useState([]);
-  // const [credits, setCredits] = useState([]);
+  const [credits, setCredits] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Track drawer state
@@ -48,7 +48,7 @@ export default function MovieDetails() {
   const [Bg, setBg] = useState("");
   const [textColor1, setTextColor] = useState("white"); // Default text color
   const [hasMovie, setHasMovie] = useState(false);
-
+  const apiKey = import.meta.env.VITE_API_KEY;
   const searchSuffix = "site:filmyzilla.com.by";
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function MovieDetails() {
       setHasMovie(false);
     }
   }, [id]);
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
@@ -106,7 +106,7 @@ export default function MovieDetails() {
     const fetchMovieData = async () => {
       try {
         const movieRes = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=4c1eef5a8d388386187a3426bc2345be`
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`
         );
         const movieData = await movieRes.json();
         const imageUrl = `https://image.tmdb.org/t/p/w500/${movieData.poster_path}?not-from-cache-please`;
@@ -125,19 +125,19 @@ export default function MovieDetails() {
         setMovie(movieData);
 
         const relatedRes = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}/similar?api_key=4c1eef5a8d388386187a3426bc2345be`
+          `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}`
         );
         const relatedMoviesData = await relatedRes.json();
         setRelatedMovies(relatedMoviesData.results);
 
-        // const creditRes = await fetch(
-        //   `https://api.themoviedb.org/3/movie/${id}/credits?api_key=4c1eef5a8d388386187a3426bc2345be`
-        // );
-
-        // setCredits(creditData.cast);
+        const creditRes = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
+        );
+        const castData = await creditRes.json();
+        setCredits(castData.cast);
 
         const trailerRes = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=4c1eef5a8d388386187a3426bc2345be`
+          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`
         );
         const trailerData = await trailerRes.json();
         const trailers = trailerData.results.filter(
@@ -328,10 +328,10 @@ export default function MovieDetails() {
         ></div>
       </div>
 
-      {/* <div className="p-5">
+      <div className="p-5">
         {credits.length > 0 && <MovieCategoryName title={"Cast"} />}
-        <CastSlider movies={credits} />
-      </div> */}
+        <CastCarousel persons={credits} />
+      </div>
 
       <div className="p-5">
         {relatedMovies.length > 0 && (

@@ -17,7 +17,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
   } = movie;
 
   return (
-    <div className="border border-zinc-800 rounded-md p-1 hover:bg-zinc-900 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg ">
+    <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-teal-900/20 backdrop-blur-10 backdrop-blur-md shadow-md hover:bg-teal-900/70 ">
       <div className="relative">
       {cancel == true ? (
           <button

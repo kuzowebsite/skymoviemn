@@ -19,6 +19,7 @@ export default function Search() {
   const [suggestions, setSuggestions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const apiKey = import.meta.env.VITE_API_KEY;
 
   // Fetch movies with the fetch API
   const fetchMovies = async (query) => {
@@ -30,7 +31,7 @@ export default function Search() {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=4c1eef5a8d388386187a3426bc2345be&query=${encodeURIComponent(
+        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
           query
         )}`
       );
@@ -76,14 +77,10 @@ export default function Search() {
         <DialogTrigger asChild>
           <div
             onClick={() => setOpen(true)}
-            className=" hover:bg-zinc-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800 bg-zinc-900 p-1 flex items-center justify-between"
+            className=" hover:bg-teal-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800 bg-teal-900 p-2 flex items-center justify-between"
           >
-            <p className="ml-3 text-sm text-zinc-400">Search movies...</p>
-            <p className="text-sm text-muted-foreground flex items-center">
-              <kbd className="pointer-events-none inline-flex select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-                <span className="text-xs">⌘</span>J
-              </kbd>
-            </p>
+            <p className="ml-3 text-sm text-teal-400">Search movies...</p>
+
           </div>
         </DialogTrigger>
 
@@ -91,14 +88,14 @@ export default function Search() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Movie Search</DialogTitle>
-            <DialogDescription>Type to search for a movie</DialogDescription>
+            {/* <DialogDescription>Type to search for a movie</DialogDescription> */}
           </DialogHeader>
           <Input
             type="text"
             placeholder="Type a movie name..."
             value={query}
             onChange={handleInputChange}
-            className="w-full mt-2 mb-4"
+            className="w-full mt-2 mb-2"
           />
 
           {suggestions.length === 0 ? (
@@ -118,7 +115,7 @@ export default function Search() {
                   <NavLink
                     to={`/movie/${movie.id}`}
                     key={movie.id}
-                    className="p-1 mt-1 hover:bg-zinc-900 cursor-pointer flex items-center  rounded-md"
+                    className="p-1 mt-1 hover:bg-teal-950/90 cursor-pointer flex items-center  rounded-md"
                     onClick={() => {
                       console.log("Selected movie:", movie.title);
                       setOpen(false); // Close dialog on selection
