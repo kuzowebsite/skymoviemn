@@ -3,6 +3,8 @@ import * as React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import "swiper/css/navigation";
 export function CastCarousel({ persons }) {
   return (
@@ -24,14 +26,16 @@ export function CastCarousel({ persons }) {
         <SwiperSlide key={person.id}>
           <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-teal-900/20 backdrop-blur-10 backdrop-blur-md shadow-md hover:bg-teal-900/70 ">
             {person.profile_path === null ? (
-              <img  className="rounded-md"
+              <LazyLoadImage  className="rounded-md"
                 src={`https://picsum.photos/200/300/?blur=2`}
                 alt={person.name}
+                effect="blur"
               />
             ) : (
-              <img className="rounded-md"
+              <LazyLoadImage className="rounded-md"
                 src={`https://image.tmdb.org/t/p/w500/${person.profile_path}`}
                 alt={person.name}
+                effect="blur"
               />
             )}
             <div className="my-2">

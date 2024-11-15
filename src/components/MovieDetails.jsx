@@ -6,9 +6,8 @@ import { FaPlay } from "react-icons/fa";
 import { FaShareAlt } from "react-icons/fa";
 import { MdBookmarkAdded } from "react-icons/md";
 import { MdBookmark } from "react-icons/md";
-
-// import { MdBookmarkBorder } from "react-icons/md";
-
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { useParams } from "react-router-dom";
 import {
   Drawer,
@@ -52,16 +51,12 @@ export default function MovieDetails() {
   const searchSuffix = "site:filmyzilla.com.by";
 
   useEffect(() => {
-    const playlist = JSON.parse(localStorage.getItem("playlist")) || []; // default to an empty array if null
-    if (playlist.includes(id)) {
-      setHasMovie(true);
-    } else {
-      setHasMovie(false);
-    }
+    window.scrollTo(0, 0);
   }, [id]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const playlist = JSON.parse(localStorage.getItem("playlist")) || [];
+    setHasMovie(playlist.includes(Number(id)));
   }, [id]);
 
   const handleConfirm = () => {

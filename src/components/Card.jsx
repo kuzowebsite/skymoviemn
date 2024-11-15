@@ -2,7 +2,8 @@ import React from "react";
 import StarRating from "./StarRating";
 import { MdOutlineCancel } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
   if (!movie || !movie.poster_path) return null; 
 
@@ -30,10 +31,11 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
           ""
         )}
         <NavLink to={`/movie/${id}`}>
-          <img
+          <LazyLoadImage
             className="h-auto w-full rounded-md cursor-pointer"
             src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
             alt={title}
+            effect="blur"
           />
         </NavLink>
 

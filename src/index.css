@@ -68,7 +68,9 @@
 
 body {
   min-height: 100vh;
-  background: url(/public/darkBg.png) no-repeat center center/cover;
+  background: black;
+  background-attachment: fixed;
+  /* background: url(/public/darkBg.png) no-repeat center center/cover; */
 }
 ::-webkit-scrollbar {
   width: 10px; /* Width of the scrollbar */
