@@ -6,7 +6,6 @@ import { FaPlay } from "react-icons/fa";
 import { FaShareAlt } from "react-icons/fa";
 import { MdBookmarkAdded } from "react-icons/md";
 import { MdBookmark } from "react-icons/md";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useParams } from "react-router-dom";
 import {
@@ -77,12 +76,12 @@ export default function MovieDetails() {
       try {
         await navigator.share({
           title: movie.title,
-          text: movie.overview,
+          text: `${movie.title}(${movie.release_date}) : ${movie.overview}\n By Ranjan`,
           url: window.location.href,
         });
         console.log("Movie shared successfully");
       } catch (error) {
-        console.error("Error sharing movie:", error);
+        toast.error(error);
       }
     } else {
       toast.error("Sharing is not supported in your browser");
@@ -100,12 +99,32 @@ export default function MovieDetails() {
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
-        const movieRes = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`
+        setLoading(true);
+        const [movieRes, relatedRes, creditRes, trailerRes] = await Promise.all(
+          [
+            fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`),
+            fetch(
+              `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}`
+            ),
+            fetch(
+              `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
+            ),
+            fetch(
+              `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`
+            ),
+          ]
         );
-        const movieData = await movieRes.json();
-        const imageUrl = `https://image.tmdb.org/t/p/w500/${movieData.poster_path}?not-from-cache-please`;
 
+        const movieData = await movieRes.json();
+        const relatedMoviesData = await relatedRes.json();
+        const castData = await creditRes.json();
+        const trailerData = await trailerRes.json();
+
+        setMovie(movieData);
+        setRelatedMovies(relatedMoviesData.results);
+        setCredits(castData.cast);
+
+        const imageUrl = `https://image.tmdb.org/t/p/w500/${movieData.poster_path}?not-from-cache-please`;
         getDominantColor(imageUrl)
           .then((rgb) => {
             let cl = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
@@ -113,28 +132,8 @@ export default function MovieDetails() {
             const textColor = getTextColorForBackground(rgb);
             setTextColor(textColor);
           })
-          .catch((error) => {
-            toast.error("Unable to get CLR");
-            console.error(error);
-          });
-        setMovie(movieData);
+          .catch(console.error);
 
-        const relatedRes = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}`
-        );
-        const relatedMoviesData = await relatedRes.json();
-        setRelatedMovies(relatedMoviesData.results);
-
-        const creditRes = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
-        );
-        const castData = await creditRes.json();
-        setCredits(castData.cast);
-
-        const trailerRes = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`
-        );
-        const trailerData = await trailerRes.json();
         const trailers = trailerData.results.filter(
           (video) => video.type === "Trailer" && video.site === "YouTube"
         );
@@ -144,21 +143,20 @@ export default function MovieDetails() {
 
         setLoading(false);
       } catch (error) {
-        toast.error(error);
-        console.error("Error fetching movie details:", error);
+        console.error(error);
+        toast.error(`Error: ${error.message}`);
         setLoading(false);
       }
     };
 
     fetchMovieData();
-  }, [id]);
+  }, [id, apiKey]);
 
   const handleAddPlayList = (id) => {
     const existingPlaylist = JSON.parse(localStorage.getItem("playlist")) || [];
     if (!existingPlaylist.includes(id)) {
       existingPlaylist.push(id);
       localStorage.setItem("playlist", JSON.stringify(existingPlaylist));
-      setHasMovie(true);
       toast.success("Added to watchlist");
     } else {
       toast.error("Already Added");
@@ -167,7 +165,7 @@ export default function MovieDetails() {
 
   if (loading)
     return (
-      <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-2 p-5 mt-14 lg:py-8 shadow-md text-white">
+      <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-2 p-5 lg:py-8 shadow-md text-white">
         <div className="relative flex justify-center items-center rounded-lg bg-cover bg-center">
           <Skeleton className="w-full h-80 rounded-lg" />
         </div>
@@ -202,7 +200,7 @@ export default function MovieDetails() {
           backgroundSize: "cover",
           color: `${textColor1}`,
         }}
-        className="relative grid grid-cols-1 lg:grid-cols-3 gap-2 p-5 mt-14 lg:py-8 shadow-md  "
+        className="relative grid grid-cols-1 lg:grid-cols-3 gap-2 p-5  lg:py-8 shadow-md  "
       >
         <div className="relative flex justify-center items-center rounded-lg bg-cover bg-center shadow-lg">
           <img

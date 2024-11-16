@@ -43,7 +43,7 @@ export default function Search() {
       const data = await response.json();
       setSuggestions(data.results || []);
     } catch (error) {
-      toast.error(error);
+      toast.error(`Error: ${error.message}`);
       console.error("Error fetching movies:", error);
       setSuggestions([]);
     } finally {

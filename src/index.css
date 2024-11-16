@@ -70,34 +70,45 @@ body {
   min-height: 100vh;
   background: black;
   background-attachment: fixed;
-  /* background: url(/public/darkBg.png) no-repeat center center/cover; */
 }
 ::-webkit-scrollbar {
-  width: 10px; /* Width of the scrollbar */
+  width: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: transparent; /* Color of the scroll thumb */
-  border-radius: 5px; /* Rounded corners */
+  background-color: transparent;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent; /* Color of the scroll track */
+  background-color: transparent;
 }
 
-footer {
-  top: 100%;
-  position: sticky;
-}
+
 
 .swiper-button-prev::after,
 .swiper-button-next::after {
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 20px !important;
-  padding: 10px !important;
-  border-radius: 50%;
-  background-color: rgba(41, 41, 41, 0.822);
+  background-color: #ffffffd2;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+.content {
+  flex: 1;
+  margin-top: 3.5rem; 
+}
+

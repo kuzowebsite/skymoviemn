@@ -49,7 +49,7 @@ const Playlist = () => {
       {movies.length > 0 ? (
         <>
           <MovieCategoryName title={"Your Watchlist"} />
-          <div className="grid grid-cols-3 lg:grid-cols-6 gap-5 text-white">
+          <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 text-white">
             {movies.map((movie) => (
               <Card
                 cancel={true}

@@ -1,9 +1,8 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { MovieSkeleton } from "./MovieSkeletion";
 import { Carousel } from "./Carousel";
 import MovieCategoryName from "./MovieCategoryName";
+import { toast } from "react-toastify";
 
 export default function MovieCarousel() {
   const [movies, setMovies] = useState({
@@ -19,6 +18,14 @@ export default function MovieCarousel() {
 
   const fetchData = async () => {
     const apiKey = import.meta.env.VITE_API_KEY;
+
+    if (!apiKey) {
+      console.error("API Key is missing. Ensure VITE_API_KEY is defined.");
+      toast.error("API Key is missing. Please contact support.");
+      setLoading(false);
+      return;
+    }
+
     const endpoints = [
       { key: "popular", url: `/movie/popular` },
       { key: "topRated", url: `/movie/top_rated` },
@@ -30,11 +37,20 @@ export default function MovieCarousel() {
 
     try {
       const fetchPromises = endpoints.map(async ({ key, url }) => {
-        const response = await fetch(
-          `https://api.themoviedb.org/3${url}?api_key=${apiKey}`
-        );
-        const data = await response.json();
-        return { key, data: data.results };
+        try {
+          const response = await fetch(
+            `https://api.themoviedb.org/3${url}?api_key=${apiKey}`
+          );
+          if (!response.ok) {
+            throw new Error(`Failed to fetch ${key} movies`);
+          }
+          const data = await response.json();
+          return { key, data: data.results || [] };
+        } catch (err) {
+          console.error(`Error fetching ${key} movies:`, err);
+          toast.error(`Error fetching ${key} movies.`);
+          return { key, data: [] }; // Return an empty array on error
+        }
       });
 
       const movieData = await Promise.all(fetchPromises);
@@ -44,9 +60,10 @@ export default function MovieCarousel() {
       }, {});
 
       setMovies(newMovies);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching movie data:", error);
+      toast.error("Error fetching movie data. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
@@ -63,23 +80,16 @@ export default function MovieCarousel() {
         </div>
       ) : (
         <div className="container mx-auto px-4 py-10">
-          <MovieCategoryName title={"Trending"} />
-          <Carousel movies={movies.trending} />
-
-          <MovieCategoryName title={"Popular"} />
-          <Carousel movies={movies.popular} />
-
-          <MovieCategoryName title={"Now Playing"} />
-          <Carousel movies={movies.nowPlaying} />
-
-          <MovieCategoryName title={"Top Rated"} />
-          <Carousel movies={movies.topRated} />
-
-          <MovieCategoryName title={"Upcoming"} />
-          <Carousel movies={movies.upcoming} />
-
-          <MovieCategoryName title={"Discover"} />
-          <Carousel movies={movies.discover} />
+          {Object.entries(movies).map(([key, movieList]) => (
+            <div key={key}>
+              <MovieCategoryName title={key.replace(/^\w/, (c) => c.toUpperCase())} />
+              {movieList.length > 0 ? (
+                <Carousel movies={movieList} />
+              ) : (
+                <p>No {key} movies available.</p>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </div>

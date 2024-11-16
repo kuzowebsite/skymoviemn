@@ -2,7 +2,7 @@ import React from "react";
 
 const Landing = () => {
   return (
-    <section className="bg-[radial-gradient(ellipse_200%_100%_at_top_right,#0D3F41,TRANSPARENT_66%)] hero flex flex-col items-center justify-center text-center gap-2 py-14 px-4 sm:px-8 lg:px-16 lg:h-80">
+    <section className=" hero flex flex-col items-center justify-center text-center gap-2 py-14 px-4 sm:px-8 lg:px-16 lg:h-80">
       <div className="w-full sm:w-2/3 md:w-2/3 lg:w-1/2 flex flex-col gap-3">
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl  text-white font-bold">
           Find Movies
