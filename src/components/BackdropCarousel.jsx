@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation, Scrollbar } from "swiper/modules";
+import { Pagination, Navigation, Scrollbar,Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/scrollbar";
 import "swiper/css/pagination";
@@ -15,9 +15,13 @@ export function BackdropCarousel({ backdrops }) {
       pagination={{
         type: "fraction",
       }}
+      autoplay={{
+        delay: 2000,
+        disableOnInteraction: false,
+      }}
       slidesPerView={3}
       navigation={true}
-      modules={[Navigation, Scrollbar, Pagination]}
+      modules={[Navigation, Scrollbar, Pagination,Autoplay]}
       className="mySwiper"
       breakpoints={{
         320: { slidesPerView: 1 },

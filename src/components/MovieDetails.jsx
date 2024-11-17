@@ -46,6 +46,7 @@ export default function MovieDetails() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Track drawer state
   const [dialogOpen, setDialogOpen] = useState(false);
   const [Bg, setBg] = useState("");
+  const [BgOpacity, setBgOpacity] = useState("");
   const [textColor1, setTextColor] = useState("white"); // Default text color
   const [hasMovie, setHasMovie] = useState(false);
   const apiKey = import.meta.env.VITE_API_KEY;
@@ -106,7 +107,7 @@ export default function MovieDetails() {
           await Promise.all([
             fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`),
             fetch(
-              `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}`
+              `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}`
             ),
             fetch(
               `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
@@ -134,7 +135,9 @@ export default function MovieDetails() {
         getDominantColor(imageUrl)
           .then((rgb) => {
             let cl = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+            let clOpacity = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]},0.7)`;
             setBg(cl);
+            setBgOpacity(clOpacity);
             const textColor = getTextColorForBackground(rgb);
             setTextColor(textColor);
             setLoading(false);
@@ -204,17 +207,17 @@ export default function MovieDetails() {
           backgroundSize: "cover",
           color: `${textColor1}`,
         }}
-        className="relative grid grid-cols-1 lg:grid-cols-3 gap-2 p-5  lg:py-8 shadow-md  "
+        className="relative grid grid-cols-1 lg:grid-cols-[300px_auto] gap-5 p-5  lg:py-8 shadow-md  "
       >
         <div className="relative flex justify-center items-center rounded-lg bg-cover bg-center shadow-lg">
           <img
-            className=" relative z-10 lg:w-2/3 h-auto w-full md:max-w-md lg:max-w-lg rounded-lg"
+            className=" relative z-10 lg:w-full h-auto w-full md:max-w-md lg:max-w-lg rounded-lg"
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
             alt={movie.title}
           />
         </div>
 
-        <div className="relative z-10 flex flex-col gap-3 col-span-2">
+        <div className="relative z-10 flex flex-col gap-3">
           <div className="flex flex-col">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold">
               {movie.title} ({movie.release_date.split("-")[0]})
@@ -312,7 +315,7 @@ export default function MovieDetails() {
           </div>
 
           <div>
-            IMDB RATING |{" "}
+            Rating |{" "}
             <span className="bg-zinc-50 text-zinc-900 px-2 rounded-md">
               {" "}
               {movie.vote_average}/10
@@ -320,11 +323,12 @@ export default function MovieDetails() {
           </div>
         </div>
         <div
-          style={{ background: `${Bg}`, opacity: ".9" }}
-          className="absolute inset-0 w-full h-full -z-5 backdrop-blur-sm"
+          style={{
+            background: `linear-gradient(to right, ${Bg} 20%, ${BgOpacity})`,
+          }}
+          className="absolute inset-0 w-full h-full -z-5 backdrop-blur-md"
         ></div>
       </div>
-
 
       <div className="px-5">
         <MovieCategoryName title={"Backdrops"} />
@@ -336,10 +340,9 @@ export default function MovieDetails() {
         <CastCarousel persons={credits} />
       </div>
 
-    
       <div className="px-5">
         {relatedMovies.length > 0 && (
-          <MovieCategoryName title={"Related Movies"} />
+          <MovieCategoryName title={"Recommendations"} />
         )}
         <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 text-white">
           {relatedMovies.map((relatedMovie) => (

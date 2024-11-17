@@ -4,6 +4,15 @@ import { Carousel } from "./Carousel";
 import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
 
+const fetchWithTimeout = async (url, options = {}, timeout = 10000) => {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), timeout)
+    ),
+  ]);
+};
+
 export default function MovieCarousel() {
   const [movies, setMovies] = useState({
     popular: [],
@@ -13,15 +22,17 @@ export default function MovieCarousel() {
     discover: [],
     trending: [],
   });
-
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchData = async () => {
     const apiKey = import.meta.env.VITE_API_KEY;
 
     if (!apiKey) {
-      console.error("API Key is missing. Ensure VITE_API_KEY is defined.");
-      toast.error("API Key is missing. Please contact support.");
+      const errorMessage = "API Key is missing. Ensure VITE_API_KEY is defined.";
+      console.error(errorMessage);
+      toast.error(errorMessage);
+      setError(errorMessage);
       setLoading(false);
       return;
     }
@@ -38,18 +49,25 @@ export default function MovieCarousel() {
     try {
       const fetchPromises = endpoints.map(async ({ key, url }) => {
         try {
-          const response = await fetch(
-            `https://api.themoviedb.org/3${url}?api_key=${apiKey}`
+          const response = await fetchWithTimeout(
+            `https://api.themoviedb.org/3${url}?api_key=${apiKey}`,
+            {},
+            10000
           );
+
           if (!response.ok) {
-            throw new Error(`Failed to fetch ${key} movies`);
+            const errorMessage = `Failed to fetch ${key} movies: ${response.statusText}`;
+            console.error(errorMessage);
+            toast.error(`Error fetching ${key} movies.`);
+            throw new Error(errorMessage);
           }
+
           const data = await response.json();
           return { key, data: data.results || [] };
         } catch (err) {
           console.error(`Error fetching ${key} movies:`, err);
-          toast.error(`Error fetching ${key} movies.`);
-          return { key, data: [] }; // Return an empty array on error
+          toast.error(err.message || `Error fetching ${key} movies.`);
+          return { key, data: [] };
         }
       });
 
@@ -60,9 +78,11 @@ export default function MovieCarousel() {
       }, {});
 
       setMovies(newMovies);
-    } catch (error) {
-      console.error("Error fetching movie data:", error);
-      toast.error("Error fetching movie data. Please try again.");
+    } catch (globalError) {
+      const errorMessage = "Error fetching movie data. Please try again.";
+      console.error(errorMessage, globalError);
+      toast.error(errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -77,6 +97,10 @@ export default function MovieCarousel() {
       {loading ? (
         <div className="px-4 py-10">
           <MovieSkeleton />
+        </div>
+      ) : error ? (
+        <div className="container mx-auto px-4 py-10">
+          <p className="text-red-500 text-center">{error}</p>
         </div>
       ) : (
         <div className="container mx-auto px-4 py-10">

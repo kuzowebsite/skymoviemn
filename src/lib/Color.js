@@ -1,4 +1,4 @@
-"use client";
+
 import ColorThief from "colorthief";
 
 export const getDominantColor = (imageUrl) => {
