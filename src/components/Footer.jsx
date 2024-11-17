@@ -3,7 +3,7 @@ import { FaGithub, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-teal-900/50 text-white py-8 px-4 mt-10">
+    <footer className="bg-red-900/30 text-white py-8 px-4 mt-10">
       <div className="container mx-auto flex flex-col items-center justify-center space-y-4">
         <h1 className="text-lg font-semibold">Connect with me</h1>
         
@@ -38,7 +38,7 @@ export default function Footer() {
           </a>
         </div>
 
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-zinc-300">
           © {new Date().getFullYear()} Ranjan Kashyap. All rights reserved.
         </p>
       </div>

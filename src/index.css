@@ -76,7 +76,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: transparent;
+  background-color: gray;
   border-radius: 5px;
 }
 
@@ -110,5 +110,6 @@ body {
 .content {
   flex: 1;
   margin-top: 3.5rem; 
+ 
 }
 

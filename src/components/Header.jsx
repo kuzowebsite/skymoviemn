@@ -6,11 +6,11 @@ import { NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
-    <div className="fixed z-50 top-0 left-0 w-full p-4 bg-teal-950/70 px-5 border-b-1 bg-opacity-50 backdrop-blur-sm  border-b border-zinc-800   py-3 flex items-center justify-between">
+    <div className="fixed z-50 top-0 left-0 w-full p-4 bg-zinc-950/70 px-5 border-b-1 bg-opacity-50 backdrop-blur-sm  border-b border-zinc-800   py-3 flex items-center justify-between">
       <NavLink to={`/`}>
         <div>
           <h1 className="  text-zinc-50 font-semibold ">
-            <span className=" px-3 py-1 bg-teal-500 text-teal-100 rounded-l-md">
+            <span className=" px-3 py-1 bg-red-500 text-teal-100 rounded-l-md">
               R
             </span>
             <span className=" ml-1 px-3 py-1 bg-zinc-50 text-zinc-900 rounded-r-md">

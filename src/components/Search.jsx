@@ -77,9 +77,9 @@ export default function Search() {
         <DialogTrigger asChild>
           <div
             onClick={() => setOpen(true)}
-            className=" hover:bg-teal-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800 bg-teal-900 p-2 flex items-center justify-between"
+            className=" hover:bg-zinc-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800 bg-zinc-900 p-2 flex items-center justify-between"
           >
-            <p className="ml-3 text-sm text-teal-400">Search movies...</p>
+            <p className="ml-3 text-sm text-zinc-400">Search movies...</p>
 
           </div>
         </DialogTrigger>

@@ -7,7 +7,7 @@ const Landing = () => {
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl  text-white font-bold">
           Find Movies
         </h1>
-        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-teal-200">
+        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-zinc-200">
           80% Free Movie Downloads | Watch Trailers Online | Best Site for Movie
           Downloads | Ranjan
         </p>

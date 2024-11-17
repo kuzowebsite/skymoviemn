@@ -33,12 +33,14 @@ import { getTextColorForBackground } from "@/lib/TextColor";
 import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
 import { CastCarousel } from "./CastCarousel";
+import { BackdropCarousel } from "./BackdropCarousel";
 
 export default function MovieDetails() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [relatedMovies, setRelatedMovies] = useState([]);
   const [credits, setCredits] = useState([]);
+  const [backdrops, setBackdrops] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Track drawer state
@@ -100,8 +102,8 @@ export default function MovieDetails() {
     const fetchMovieData = async () => {
       try {
         setLoading(true);
-        const [movieRes, relatedRes, creditRes, trailerRes] = await Promise.all(
-          [
+        const [movieRes, relatedRes, creditRes, trailerRes, backdropRes] =
+          await Promise.all([
             fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`),
             fetch(
               `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}`
@@ -112,17 +114,21 @@ export default function MovieDetails() {
             fetch(
               `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`
             ),
-          ]
-        );
+            fetch(
+              `https://api.themoviedb.org/3/movie/${id}/images?api_key=${apiKey}`
+            ),
+          ]);
 
         const movieData = await movieRes.json();
         const relatedMoviesData = await relatedRes.json();
         const castData = await creditRes.json();
         const trailerData = await trailerRes.json();
+        const backdropData = await backdropRes.json();
 
         setMovie(movieData);
         setRelatedMovies(relatedMoviesData.results);
         setCredits(castData.cast);
+        setBackdrops(backdropData);
 
         const imageUrl = `https://image.tmdb.org/t/p/w500/${movieData.poster_path}?not-from-cache-please`;
         getDominantColor(imageUrl)
@@ -131,6 +137,7 @@ export default function MovieDetails() {
             setBg(cl);
             const textColor = getTextColorForBackground(rgb);
             setTextColor(textColor);
+            setLoading(false);
           })
           .catch(console.error);
 
@@ -185,10 +192,7 @@ export default function MovieDetails() {
             <Skeleton className="w-full h-4" />
           </div>
         </div>
-        <div
-          style={{ background: `${Bg}` }}
-          className="absolute inset-0 w-full h-full -z-5"
-        ></div>
+        <div className="absolute inset-0 w-full h-full -z-5"></div>
       </div>
     );
 
@@ -321,16 +325,23 @@ export default function MovieDetails() {
         ></div>
       </div>
 
-      <div className="p-5">
-        {credits.length > 0 && <MovieCategoryName title={"Cast"} />}
+
+      <div className="px-5">
+        <MovieCategoryName title={"Backdrops"} />
+        <BackdropCarousel backdrops={backdrops} />
+      </div>
+
+      <div className="px-5">
+        {credits.length > 0 && <MovieCategoryName title={"Top Billed Cast"} />}
         <CastCarousel persons={credits} />
       </div>
 
-      <div className="p-5">
+    
+      <div className="px-5">
         {relatedMovies.length > 0 && (
           <MovieCategoryName title={"Related Movies"} />
         )}
-        <div className="grid grid-cols-3 lg:grid-cols-6 gap-5 text-white">
+        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 text-white">
           {relatedMovies.map((relatedMovie) => (
             <Card key={relatedMovie.id} movie={relatedMovie} />
           ))}
