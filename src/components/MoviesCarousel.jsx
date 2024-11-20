@@ -31,7 +31,6 @@ export default function MovieCarousel() {
 
     const axiosInstance = axios.create({
       baseURL: "https://api.themoviedb.org/3",
-      timeout: 10000,
       params: {
         api_key: apiKey,
       },

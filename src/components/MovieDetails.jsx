@@ -168,6 +168,7 @@ export default function MovieDetails() {
       existingPlaylist.push(id);
       localStorage.setItem("playlist", JSON.stringify(existingPlaylist));
       toast.success("Added to watchlist");
+      setHasMovie(true)
     } else {
       toast.error("Already Added");
     }
