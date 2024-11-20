@@ -5,19 +5,8 @@ import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
 
 const fetchWithTimeout = async (url, options = {}, timeout = 10000) => {
-  const bearerToken = import.meta.env.VITE_TMDB_BEARER_TOKEN;
-  if (!bearerToken) {
-    throw new Error("Bearer token is missing. Ensure VITE_TMDB_BEARER_TOKEN is defined.");
-  }
-
-  const headers = {
-    ...options.headers,
-    Authorization: `Bearer ${bearerToken}`,
-    Accept: "application/json",
-  };
-
   return Promise.race([
-    fetch(url, { ...options, headers }),
+    fetch(url, options),
     new Promise((_, reject) =>
       setTimeout(() => reject(new Error("Request timed out")), timeout)
     ),
@@ -38,7 +27,7 @@ export default function MovieCarousel() {
 
   const fetchData = async () => {
     const apiKey = import.meta.env.VITE_API_KEY;
-     console.log(apiKey)
+
     if (!apiKey) {
       const errorMessage = "API Key is missing. Ensure VITE_API_KEY is defined.";
       console.error(errorMessage);
