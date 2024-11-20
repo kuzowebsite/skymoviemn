@@ -3,7 +3,26 @@ import { MovieSkeleton } from "./MovieSkeletion";
 import { Carousel } from "./Carousel";
 import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
-import axios from "axios";
+
+const fetchWithTimeout = async (url, options = {}, timeout = 10000) => {
+  const bearerToken = import.meta.env.VITE_TMDB_BEARER_TOKEN;
+  if (!bearerToken) {
+    throw new Error("Bearer token is missing. Ensure VITE_TMDB_BEARER_TOKEN is defined.");
+  }
+
+  const headers = {
+    ...options.headers,
+    Authorization: `Bearer ${bearerToken}`,
+    Accept: "application/json",
+  };
+
+  return Promise.race([
+    fetch(url, { ...options, headers }),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), timeout)
+    ),
+  ]);
+};
 
 export default function MovieCarousel() {
   const [movies, setMovies] = useState({
@@ -19,7 +38,7 @@ export default function MovieCarousel() {
 
   const fetchData = async () => {
     const apiKey = import.meta.env.VITE_API_KEY;
-
+     console.log(apiKey)
     if (!apiKey) {
       const errorMessage = "API Key is missing. Ensure VITE_API_KEY is defined.";
       console.error(errorMessage);
@@ -29,30 +48,36 @@ export default function MovieCarousel() {
       return;
     }
 
-    const axiosInstance = axios.create({
-      baseURL: "https://api.themoviedb.org/3",
-      params: {
-        api_key: apiKey,
-      },
-    });
-
     const endpoints = [
-      { key: "popular", url: "/movie/popular" },
-      { key: "topRated", url: "/movie/top_rated" },
-      { key: "upcoming", url: "/movie/upcoming" },
-      { key: "nowPlaying", url: "/movie/now_playing" },
-      { key: "discover", url: "/discover/movie" },
-      { key: "trending", url: "/trending/movie/day" },
+      { key: "popular", url: `/movie/popular` },
+      { key: "topRated", url: `/movie/top_rated` },
+      { key: "upcoming", url: `/movie/upcoming` },
+      { key: "nowPlaying", url: `/movie/now_playing` },
+      { key: "discover", url: `/discover/movie` },
+      { key: "trending", url: `/trending/movie/day` },
     ];
 
     try {
       const fetchPromises = endpoints.map(async ({ key, url }) => {
         try {
-          const response = await axiosInstance.get(url);
-          return { key, data: response.data.results || [] };
+          const response = await fetchWithTimeout(
+            `https://api.themoviedb.org/3${url}?api_key=${apiKey}`,
+            {},
+            10000
+          );
+
+          if (!response.ok) {
+            const errorMessage = `Failed to fetch ${key} movies: ${response.statusText}`;
+            console.error(errorMessage);
+            toast.error(`Error fetching ${key} movies.`);
+            throw new Error(errorMessage);
+          }
+
+          const data = await response.json();
+          return { key, data: data.results || [] };
         } catch (err) {
           console.error(`Error fetching ${key} movies:`, err);
-          toast.error(err.response?.data?.status_message || `Error fetching ${key} movies.`);
+          toast.error(err.message || `Error fetching ${key} movies.`);
           return { key, data: [] };
         }
       });
