@@ -1,5 +1,4 @@
 import React from "react";
-import StarRating from "./StarRating";
 import { MdOutlineCancel } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -18,7 +17,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
   } = movie;
 
   return (
-    <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-red-900/20 backdrop-blur-10 backdrop-blur-md shadow-md hover:bg-red-900/70 ">
+    <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg  hover:bg-zinc-100">
       <div className="relative">
         {cancel == true ? (
           <button
@@ -39,17 +38,17 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
           />
         </NavLink>
       </div>
-      <div className="text-white my-2">
+      <div className="text-teal-950 my-2">
         <h1
           className="text-base sm:text-lg lg:text-xl overflow-hidden text-ellipsis whitespace-nowrap"
           title={title}
         >
           {title === "No Title" ? name : title}
         </h1>
-        <p className="text-xs text-slate-300">
+        <p className="text-xs text-teal-700">
           {release_date !== "N/A" ? release_date.split("-")[0] : first_air_date}
         </p>
-        <StarRating rating={vote_average} /> {/* Use StarRating component */}
+      
       </div>
     </div>
   );

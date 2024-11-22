@@ -8,6 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <App />
-    <ToastContainer closeOnClick theme="dark"></ToastContainer>
+    <ToastContainer
+      position="bottom-center"
+      closeOnClick
+      theme="dark"
+    ></ToastContainer>
   </StrictMode>
 );

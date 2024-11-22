@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import {
   Dialog,
@@ -12,7 +11,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
-
 
 export default function Search() {
   const [open, setOpen] = React.useState(false);
@@ -77,10 +75,9 @@ export default function Search() {
         <DialogTrigger asChild>
           <div
             onClick={() => setOpen(true)}
-            className=" hover:bg-zinc-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800 bg-zinc-900 p-2 flex items-center justify-between"
+            className=" hover:bg-zinc-200 w-full lg:w-80 cursor-pointer rounded-md border border-teal-800 bg-zinc-100 p-2 flex items-center justify-between"
           >
-            <p className="ml-3 text-sm text-zinc-400">Search movies...</p>
-
+            <p className="ml-3 text-sm text-teal-900">Search movies...</p>
           </div>
         </DialogTrigger>
 
@@ -115,7 +112,7 @@ export default function Search() {
                   <NavLink
                     to={`/movie/${movie.id}`}
                     key={movie.id}
-                    className="p-1 mt-1 hover:bg-teal-950/90 cursor-pointer flex items-center  rounded-md"
+                    className="p-1 mt-1 hover:bg-zinc-100 cursor-pointer flex items-center  rounded-md"
                     onClick={() => {
                       console.log("Selected movie:", movie.title);
                       setOpen(false); // Close dialog on selection

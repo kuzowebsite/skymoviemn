@@ -10,15 +10,13 @@ export function Carousel({ movies }) {
     <Swiper
       spaceBetween={5}
       slidesPerView={5}
-      navigation={true}
-      modules={[Navigation]}
       className="mySwiper"
       watchSlidesProgress={true}
       breakpoints={{
-        320: { slidesPerView: 3 },
-        640: { slidesPerView: 4 },
-        768: { slidesPerView: 5 },
-        1024: { slidesPerView: 6 },
+        320: { slidesPerView: 2.5 },
+        640: { slidesPerView: 4.5 },
+        768: { slidesPerView: 5.5 },
+        1024: { slidesPerView: 6.5 },
       }}
     >
       {movies.map((movie, i) => (

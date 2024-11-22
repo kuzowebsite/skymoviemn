@@ -34,7 +34,7 @@ import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
 import { CastCarousel } from "./CastCarousel";
 import { BackdropCarousel } from "./BackdropCarousel";
-
+import StarRating from "./StarRating";
 export default function MovieDetails() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
@@ -150,8 +150,6 @@ export default function MovieDetails() {
         if (trailers.length > 0) {
           setTrailer(`https://www.youtube.com/embed/${trailers[0].key}`);
         }
-
-        setLoading(false);
       } catch (error) {
         console.error(error);
         toast.error(`Error: ${error.message}`);
@@ -168,7 +166,7 @@ export default function MovieDetails() {
       existingPlaylist.push(id);
       localStorage.setItem("playlist", JSON.stringify(existingPlaylist));
       toast.success("Added to watchlist");
-      setHasMovie(true)
+      setHasMovie(true);
     } else {
       toast.error("Already Added");
     }
@@ -176,7 +174,7 @@ export default function MovieDetails() {
 
   if (loading)
     return (
-      <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-2 p-5 lg:py-8 shadow-md text-white">
+      <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-2 p-5 lg:py-8  text-white">
         <div className="relative flex justify-center items-center rounded-lg bg-cover bg-center">
           <Skeleton className="w-full h-80 rounded-lg" />
         </div>
@@ -206,13 +204,36 @@ export default function MovieDetails() {
         style={{
           backgroundImage: `url(https://image.tmdb.org/t/p/w780/${movie.backdrop_path})`,
           backgroundSize: "cover",
+          backgroundPosition: "center",
           color: `${textColor1}`,
         }}
-        className="relative grid grid-cols-1 lg:grid-cols-[300px_auto] gap-5 p-5  lg:py-8 shadow-md  "
+        className="relative flex items-center justify-start w-full p-4 aspect-video z-20 lg:hidden"
       >
-        <div className="relative flex justify-center items-center rounded-lg bg-cover bg-center shadow-lg">
+        <div
+          className="absolute inset-0 z-10"
+          style={{
+            background: `linear-gradient(to right, ${Bg} 30%, transparent)`,
+          }}
+        ></div>
+
+        <img
+          className="w-1/3 z-20 relative rounded-md"
+          src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+          alt={movie.title}
+        />
+      </div>
+
+      <div
+        style={{
+          backgroundImage: `url(https://image.tmdb.org/t/p/w780/${movie.backdrop_path})`,
+          backgroundSize: "cover",
+          color: `${textColor1}`,
+        }}
+        className="relative grid grid-cols-1 lg:grid-cols-[300px_auto] gap-5 p-5  lg:py-8 "
+      >
+        <div className=" relative flex justify-center items-center rounded-lg bg-cover bg-center shadow-md ">
           <img
-            className=" relative z-10 lg:w-full h-auto w-full md:max-w-md lg:max-w-lg rounded-lg"
+            className=" hidden lg:block relative z-10 lg:w-full h-auto w-full md:max-w-md lg:max-w-lg rounded-lg"
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
             alt={movie.title}
           />
@@ -316,18 +337,19 @@ export default function MovieDetails() {
           </div>
 
           <div>
-            Rating |{" "}
-            <span className="bg-zinc-50 text-zinc-900 px-2 rounded-md">
-              {" "}
-              {movie.vote_average}/10
-            </span>
+            <span className="px-2 text-black rounded-sm bg-yellow-500">
+              IMDB
+            </span>{" "}
+            <span className=""> {Math.round(movie.vote_average)}/10</span>
           </div>
+          <StarRating rating={movie.vote_average} />
         </div>
         <div
           style={{
-            background: `linear-gradient(to right, ${Bg} 20%, ${BgOpacity})`,
+            background: `${Bg}`,
+            opacity: ".95",
           }}
-          className="absolute inset-0 w-full h-full -z-5 backdrop-blur-md"
+          className="bgOpacity absolute inset-0 w-full h-full -z-5 backdrop-blur-md"
         ></div>
       </div>
 

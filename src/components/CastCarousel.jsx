@@ -16,15 +16,15 @@ export function CastCarousel({ persons }) {
       className="mySwiper"
       watchSlidesProgress={true}
       breakpoints={{
-        320: { slidesPerView: 3 },
-        640: { slidesPerView: 4 },
-        768: { slidesPerView: 5 },
-        1024: { slidesPerView: 6 },
+        320: { slidesPerView: 3.5 },
+        640: { slidesPerView: 4.5 },
+        768: { slidesPerView: 5.5 },
+        1024: { slidesPerView: 6.5 },
       }}
     >
       {persons.map((person) => (
         <SwiperSlide key={person.id}>
-          <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-red-900/20 backdrop-blur-10 backdrop-blur-md shadow-md hover:bg-red-900/70 ">
+          <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg   ">
             {person.profile_path === null ? (
               <LazyLoadImage  className="rounded-md"
                 src={`https://picsum.photos/200/300/?blur=2`}
@@ -39,10 +39,10 @@ export function CastCarousel({ persons }) {
               />
             )}
             <div className="my-2">
-              <h1 className="text-sm sm:text-lg lg:text-xl overflow-hidden text-ellipsis whitespace-nowrap">
+              <h1 className="text-teal-950 text-sm  lg:text-xl overflow-hidden text-ellipsis whitespace-nowrap">
                 {person.name}
               </h1>
-              <h2 className="text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+              <h2 className="text-xs overflow-hidden text-ellipsis whitespace-nowrap text-teal-800">
                 {person.character}
               </h2>
             </div>
