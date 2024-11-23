@@ -34,13 +34,14 @@ import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
 import { CastCarousel } from "./CastCarousel";
 import { BackdropCarousel } from "./BackdropCarousel";
-import StarRating from "./StarRating";
+
 export default function MovieDetails() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const [relatedMovies, setRelatedMovies] = useState([]);
   const [credits, setCredits] = useState([]);
   const [backdrops, setBackdrops] = useState([]);
+  const [movieKeywords, setKeywords] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Track drawer state
@@ -103,34 +104,44 @@ export default function MovieDetails() {
     const fetchMovieData = async () => {
       try {
         setLoading(true);
-        const [movieRes, relatedRes, creditRes, trailerRes, backdropRes] =
-          await Promise.all([
-            fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`),
-            fetch(
-              `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}`
-            ),
-            fetch(
-              `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
-            ),
-            fetch(
-              `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`
-            ),
-            fetch(
-              `https://api.themoviedb.org/3/movie/${id}/images?api_key=${apiKey}`
-            ),
-          ]);
+        const [
+          movieRes,
+          relatedRes,
+          creditRes,
+          trailerRes,
+          backdropRes,
+          keywordsRes,
+        ] = await Promise.all([
+          fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`),
+          fetch(
+            `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}`
+          ),
+          fetch(
+            `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
+          ),
+          fetch(
+            `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`
+          ),
+          fetch(
+            `https://api.themoviedb.org/3/movie/${id}/images?api_key=${apiKey}`
+          ),
+          fetch(
+            `https://api.themoviedb.org/3/movie/${id}/keywords?api_key=${apiKey}`
+          ),
+        ]);
 
         const movieData = await movieRes.json();
         const relatedMoviesData = await relatedRes.json();
         const castData = await creditRes.json();
         const trailerData = await trailerRes.json();
         const backdropData = await backdropRes.json();
+        const keywordData = await keywordsRes.json();
 
         setMovie(movieData);
         setRelatedMovies(relatedMoviesData.results);
         setCredits(castData.cast);
         setBackdrops(backdropData);
-
+        setKeywords(keywordData.keywords);
         const imageUrl = `https://image.tmdb.org/t/p/w500/${movieData.poster_path}?not-from-cache-please`;
         getDominantColor(imageUrl)
           .then((rgb) => {
@@ -250,7 +261,7 @@ export default function MovieDetails() {
               {convertMinutesToTime(movie.runtime)}
             </p>
           </div>
-          <div className="my-2 flex items-center gap-2">
+          <div className="my-1 flex items-center gap-2">
             <div>
               <div
                 className="w-10 h-10 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer"
@@ -336,13 +347,24 @@ export default function MovieDetails() {
             </p>
           </div>
 
+          <div className="flex items-start gap-1 flex-wrap">
+            {movieKeywords.map((item) => (
+              <span
+                className="border border-slate-50/10 px-2 py-1 text-sm rounded-sm"
+                key={item.id}
+              >
+                {item.name}
+              </span>
+            ))}
+          </div>
+
           <div>
             <span className="px-2 text-black rounded-sm bg-yellow-500">
               IMDB
             </span>{" "}
             <span className=""> {Math.round(movie.vote_average)}/10</span>
           </div>
-          <StarRating rating={movie.vote_average} />
+
         </div>
         <div
           style={{

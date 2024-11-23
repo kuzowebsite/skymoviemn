@@ -4,7 +4,7 @@ import { Carousel } from "./Carousel";
 import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
 
-const fetchWithTimeout = async (url, options = {}, timeout = 10000) => {
+const fetchWithTimeout = async (url, options = {}, timeout = 15000) => {
   return Promise.race([
     fetch(url, options),
     new Promise((_, reject) =>

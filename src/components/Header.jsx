@@ -7,7 +7,7 @@ import logo from "../assets/logoflix.svg";
 
 const Header = () => {
   return (
-    <div className="fixed z-50 top-0 left-0 w-full p-4 bg-teal-950 px-5  py-3 flex items-center justify-between">
+    <div className="fixed z-50 top-0 left-0 w-full p-4 bg-zinc-950 px-5  py-3 flex items-center justify-between border-b border-slate-50/10">
       <NavLink to={`/`}>
         <div>
           <img className="h-9 lg:h-10" src={logo} alt="Rflix" />

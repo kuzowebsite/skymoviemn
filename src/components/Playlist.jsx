@@ -50,7 +50,7 @@ const Playlist = () => {
         <>
           <MovieCategoryName title={"Your Watchlist"} />
           <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 text-white">
-            {movies.map((movie) => (
+            {movies.slice().reverse().map((movie) => (
               <Card
                 cancel={true}
                 key={movie.id}
