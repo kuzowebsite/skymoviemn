@@ -346,6 +346,7 @@ export default function MovieDetails() {
               {movie.overview}
             </p>
           </div>
+          <p className="font-semibold text-xl">KeyWords</p>
 
           <div className="flex items-start gap-1 flex-wrap">
             {movieKeywords.map((item) => (
@@ -364,7 +365,6 @@ export default function MovieDetails() {
             </span>{" "}
             <span className=""> {Math.round(movie.vote_average)}/10</span>
           </div>
-
         </div>
         <div
           style={{

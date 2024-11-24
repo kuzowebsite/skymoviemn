@@ -38,7 +38,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
           />
         </NavLink>
       </div>
-      <div className="text-teal-50 my-2">
+      <div className="text-yellow-50 my-2">
         <h1
           className="text-base sm:text-lg lg:text-xl overflow-hidden text-ellipsis whitespace-nowrap"
           title={title}

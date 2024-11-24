@@ -6,6 +6,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 export function Carousel({ movies }) {
+
   return (
     <Swiper
       spaceBetween={5}

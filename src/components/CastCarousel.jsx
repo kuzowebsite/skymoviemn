@@ -1,11 +1,12 @@
 "use client";
 import * as React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules";
+import {  Navigation } from "swiper/modules";
 import "swiper/css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "swiper/css/navigation";
+import { NavLink } from "react-router-dom";
 export function CastCarousel({ persons }) {
   return (
     <Swiper
@@ -25,6 +26,7 @@ export function CastCarousel({ persons }) {
       {persons.map((person) => (
         <SwiperSlide key={person.id}>
           <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg   ">
+            <NavLink to={`/person/${person.id}`}>
             {person.profile_path === null ? (
               <LazyLoadImage
                 className="rounded-md"
@@ -40,6 +42,7 @@ export function CastCarousel({ persons }) {
                 effect="blur"
               />
             )}
+            </NavLink>
             <div className="my-2">
               <h1 className="text-teal-50 text-sm  lg:text-xl overflow-hidden text-ellipsis whitespace-nowrap">
                 {person.name}
