@@ -346,7 +346,7 @@ export default function MovieDetails() {
               {movie.overview}
             </p>
           </div>
-          <p className="font-semibold text-xl">KeyWords</p>
+          <p className="font-semibold text-xl">Keywords</p>
 
           <div className="flex items-start gap-1 flex-wrap">
             {movieKeywords.map((item) => (

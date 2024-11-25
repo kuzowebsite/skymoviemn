@@ -71,7 +71,7 @@ const Person = () => {
         <div className="flex flex-col gap-2 items-start">
           <div
             onClick={goBack}
-            className="flex items-center p-2 px-4 gap-2 cursor-pointer  bg-zinc-800 rounded-full "
+            className="flex items-center p-2 px-4 gap-2 cursor-pointer  bg-zinc-800 rounded-sm "
           >
             <MdArrowBack />
             Back To Main

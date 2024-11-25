@@ -5,8 +5,6 @@ export default function Footer() {
   return (
     <footer className="bg-zinc-900 text-white py-8 px-4 mt-10">
       <div className="container mx-auto flex flex-col items-center justify-center space-y-4">
-        <h1 className="text-lg font-semibold">Connect with me</h1>
-        
         {/* Icons */}
         <div className="flex space-x-6">
           {/* GitHub */}
@@ -16,7 +14,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-gray-400 hover:text-white transition-colors"
           >
-            <FaGithub size={28} />
+            <FaGithub size={20} />
           </a>
 
           {/* Email */}
@@ -24,7 +22,7 @@ export default function Footer() {
             href="mailto:kashyapranjan9977@gmail.com"
             className="text-gray-400 hover:text-white transition-colors"
           >
-            <FaEnvelope size={28} />
+            <FaEnvelope size={20} />
           </a>
 
           {/* WhatsApp */}
@@ -34,7 +32,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="text-gray-400 hover:text-white transition-colors"
           >
-            <FaWhatsapp size={28} />
+            <FaWhatsapp size={20} />
           </a>
         </div>
 

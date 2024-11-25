@@ -112,7 +112,7 @@ export default function Search() {
                   <NavLink
                     to={`/movie/${movie.id}`}
                     key={movie.id}
-                    className="p-1 mt-1 hover:bg-zinc-100 cursor-pointer flex items-center  rounded-md"
+                    className="p-1 mt-1 hover:bg-zinc-800 cursor-pointer flex items-center  rounded-md"
                     onClick={() => {
                       console.log("Selected movie:", movie.title);
                       setOpen(false); // Close dialog on selection

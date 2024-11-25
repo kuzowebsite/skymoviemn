@@ -98,9 +98,9 @@ body {
 }
 
 .hero{
-  background-color: #ffffff;
-  background-image: url("https://img.freepik.com/free-vector/abstract-red-circle-black-background-technology_1142-9839.jpg?t=st=1732354890~exp=1732358490~hmac=2ecb30e6095e3af5d15e6ab8361cc6725d7354ec1718bdb9b38e2bc3bc4efc77&w=996");
+  background-color: #000000;
   background-size: cover;
+  background-position: center;
 }
 
 .layout-container {

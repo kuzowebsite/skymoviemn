@@ -17,7 +17,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
   } = movie;
 
   return (
-    <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg  hover:bg-zinc-900">
+    <div className=" rounded-md max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
       <div className="relative">
         {cancel == true ? (
           <button
@@ -38,9 +38,9 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
           />
         </NavLink>
       </div>
-      <div className="text-yellow-50 my-2">
+      <div className="text-zinc-50 my-2">
         <h1
-          className="text-base sm:text-lg lg:text-xl overflow-hidden text-ellipsis whitespace-nowrap"
+          className="text-base sm:text-md lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
           title={title}
         >
           {title === "No Title" ? name : title}
@@ -48,7 +48,6 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
         <p className="text-xs text-zinc-500">
           {release_date !== "N/A" ? release_date.split("-")[0] : first_air_date}
         </p>
-      
       </div>
     </div>
   );

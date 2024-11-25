@@ -22,6 +22,8 @@ export default function MovieCarousel() {
     discover: [],
     trending: [],
   });
+
+  const [year,setYear] = useState(new Date().getFullYear())
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -29,7 +31,8 @@ export default function MovieCarousel() {
     const apiKey = import.meta.env.VITE_API_KEY;
 
     if (!apiKey) {
-      const errorMessage = "API Key is missing. Ensure VITE_API_KEY is defined.";
+      const errorMessage =
+        "API Key is missing. Ensure VITE_API_KEY is defined.";
       console.error(errorMessage);
       toast.error(errorMessage);
       setError(errorMessage);
@@ -38,13 +41,44 @@ export default function MovieCarousel() {
     }
 
     const endpoints = [
-      { key: "popular", url: `/movie/popular` },
-      { key: "topRated", url: `/movie/top_rated` },
-      { key: "upcoming", url: `/movie/upcoming` },
-      { key: "nowPlaying", url: `/movie/now_playing` },
-      { key: "discover", url: `/discover/movie` },
-      { key: "trending", url: `/trending/movie/day` },
+      {
+        key: "Latest Hindi Movie Releases",
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&primary_release_year=${year}`,
+      },
+      {
+        key: "Top Hindi Action Movies",
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&with_genres=28`,
+      },
+      {
+        key: "Latest Tamil Movie Releases",
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=te&primary_release_year=${year}`,
+      },
+      {
+        key: "Top Tamil Action Movies",
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=te&with_genres=28`,
+      },
+      {
+        key: "Highest Rated Hindi Movies",
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&sort_by=vote_average.desc&vote_count.gte=100`,
+      },
+      {
+        key: "Trending Movies Today",
+        url: `/trending/movie/day`,
+      },
+      {
+        key: "Most Popular Movies",
+        url: `/movie/popular`,
+      },
+      {
+        key: "Top Rated Movies Globally",
+        url: `/movie/top_rated`,
+      },
+      {
+        key: "Upcoming Movie Releases",
+        url: `/movie/upcoming`,
+      },
     ];
+    
 
     try {
       const fetchPromises = endpoints.map(async ({ key, url }) => {
@@ -103,10 +137,12 @@ export default function MovieCarousel() {
           <p className="text-red-500 text-center">{error}</p>
         </div>
       ) : (
-        <div className="container mx-auto px-4 py-10">
+        <div className="container mx-auto px-4 py-10 ">
           {Object.entries(movies).map(([key, movieList]) => (
-            <div key={key}>
-              <MovieCategoryName title={key.replace(/^\w/, (c) => c.toUpperCase())} />
+            <div className="border-b border-zinc-800 pb-4" key={key}>
+              <MovieCategoryName
+                title={key.replace(/^\w/, (c) => c.toUpperCase())}
+              />
               {movieList.length > 0 ? (
                 <Carousel movies={movieList} />
               ) : (

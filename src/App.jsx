@@ -6,6 +6,8 @@ import MovieDetails from "./components/MovieDetails";
 import Playlist from "./components/Playlist";
 import Person from "./components/Person";
 
+
+
 function App() {
   return (
     <Router>
