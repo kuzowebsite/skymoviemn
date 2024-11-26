@@ -40,7 +40,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
       </div>
       <div className="text-zinc-50 my-2">
         <h1
-          className="text-base sm:text-md lg:text-lg overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
+          className="text-base sm:text-md lg:text-md overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
           title={title}
         >
           {title === "No Title" ? name : title}

@@ -7,7 +7,7 @@ const Layout = () => {
   return (
     <div className="layout-container">
       <Header />
-      <div className="content">
+      <div className="content mt-[50px]">
         <Outlet />
       </div>
       <Footer />
@@ -16,4 +16,3 @@ const Layout = () => {
 };
 
 export default Layout;
- 

@@ -23,7 +23,7 @@ export default function MovieCarousel() {
     trending: [],
   });
 
-  const [year,setYear] = useState(new Date().getFullYear())
+  const [year, setYear] = useState(new Date().getFullYear());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -78,7 +78,6 @@ export default function MovieCarousel() {
         url: `/movie/upcoming`,
       },
     ];
-    
 
     try {
       const fetchPromises = endpoints.map(async ({ key, url }) => {
@@ -142,6 +141,7 @@ export default function MovieCarousel() {
             <div className="border-b border-zinc-800 pb-4" key={key}>
               <MovieCategoryName
                 title={key.replace(/^\w/, (c) => c.toUpperCase())}
+                linkTo={`/movies/${key}`}
               />
               {movieList.length > 0 ? (
                 <Carousel movies={movieList} />

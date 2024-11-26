@@ -5,7 +5,7 @@ import Layout from "./components/Layout";
 import MovieDetails from "./components/MovieDetails";
 import Playlist from "./components/Playlist";
 import Person from "./components/Person";
-
+import MoviesPage from "./components/AllMoviesPage";
 
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="/movie/:id" element={<MovieDetails />} />
           <Route path="/person/:id" element={<Person />} />
+          <Route path="/movies/:url" element={<MoviesPage />} />
           <Route path="/watchlist" element={<Playlist />} />\
         </Route>
       </Routes>
