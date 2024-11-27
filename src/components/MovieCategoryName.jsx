@@ -9,7 +9,7 @@ const MovieCategoryName = ({ title, linkTo }) => {
       </h2>
       {linkTo ? (
         <NavLink to={linkTo}>
-          <button className="border border-zinc-900 py-1 px-4 rounded-full hover:bg-zinc-800">
+          <button className="border border-zinc-800 py-1 px-4 rounded-full hover:bg-zinc-800 text-sm lg:text-md">
             View all
           </button>
         </NavLink>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSearchParams } from "react-router-dom";
+
 import Card from "./Card";
 import MovieCategoryName from "./MovieCategoryName";
 import {
@@ -14,14 +16,16 @@ import {
 } from "@/components/ui/pagination";
 
 const MoviesPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const { url } = useParams();
   const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [pageUrl, setPageUrl] = useState(null);
   const [year, setYear] = useState(new Date().getFullYear());
+ 
 
   const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -47,6 +51,10 @@ const MoviesPage = () => {
       url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&sort_by=vote_average.desc&vote_count.gte=100`,
     },
     {
+      key: "Sci-Fi Movies",
+      url: `/discover/movie?api_key=${apiKey}&with_genres=878`,
+    },
+    {
       key: "Trending Movies Today",
       url: `/trending/movie/day?api_key=${apiKey}`,
     },
@@ -67,7 +75,9 @@ const MoviesPage = () => {
   // Dynamically fetch the URL for the selected endpoint
   const getLinkTo = () => {
     const endpoint = endpoints.find((e) => e.key === url);
-    return endpoint ? endpoint.url : `/movies/${url.toLowerCase().replace(/\s+/g, "-")}`;
+    return endpoint
+      ? endpoint.url
+      : `/movies/${url.toLowerCase().replace(/\s+/g, "-")}`;
   };
 
   const fetchMovies = async () => {
@@ -110,6 +120,8 @@ const MoviesPage = () => {
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setPage(newPage);
+      searchParams.set("page", newPage);
+      setSearchParams(searchParams);
     }
   };
 
@@ -133,47 +145,7 @@ const MoviesPage = () => {
             Previous
           </PaginationPrevious>
           <PaginationContent>
-            {/* Always show the first page */}
-            <PaginationItem isActive={page === 1}>
-              <PaginationLink onClick={() => handlePageChange(1)}>
-                1
-              </PaginationLink>
-            </PaginationItem>
-
-            {/* Add ellipsis if needed */}
-            {page > 3 && totalPages > 5 && <PaginationEllipsis />}
-
-            {/* Show a range of pages around the current page */}
-            {Array.from({ length: 5 }, (_, index) => {
-              const currentPage = page - 2 + index;
-              if (currentPage > 1 && currentPage < totalPages) {
-                return (
-                  <PaginationItem
-                    key={currentPage}
-                    isActive={currentPage === page}
-                  >
-                    <PaginationLink
-                      onClick={() => handlePageChange(currentPage)}
-                    >
-                      {currentPage}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              }
-              return null;
-            })}
-
-            {/* Add ellipsis if needed */}
-            {page < totalPages - 2 && totalPages > 5 && <PaginationEllipsis />}
-
-            {/* Always show the last page */}
-            {totalPages > 1 && (
-              <PaginationItem isActive={page === totalPages}>
-                <PaginationLink onClick={() => handlePageChange(totalPages)}>
-                  {totalPages}
-                </PaginationLink>
-              </PaginationItem>
-            )}
+            {page} / {totalPages}
           </PaginationContent>
           <PaginationNext
             onClick={() => handlePageChange(page + 1)}

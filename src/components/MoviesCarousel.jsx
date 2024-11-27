@@ -41,25 +41,23 @@ export default function MovieCarousel() {
     }
 
     const endpoints = [
-      {
-        key: "Latest Hindi Movie Releases",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&primary_release_year=${year}`,
-      },
+    
       {
         key: "Top Hindi Action Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&with_genres=28`,
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&with_genres=28&primary_release_year=${year}`,
       },
-      {
-        key: "Latest Tamil Movie Releases",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=te&primary_release_year=${year}`,
-      },
+  
       {
         key: "Top Tamil Action Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=te&with_genres=28`,
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=te&with_genres=28&primary_release_year=${year}`,
       },
       {
         key: "Highest Rated Hindi Movies",
         url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&sort_by=vote_average.desc&vote_count.gte=100`,
+      },
+      {
+        key: "Sci-Fi Movies",
+        url: `/discover/movie?api_key=${apiKey}&with_genres=878&primary_release_year=${year}`,
       },
       {
         key: "Trending Movies Today",

@@ -34,6 +34,7 @@ import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "react-toastify";
 import { CastCarousel } from "./CastCarousel";
 import { BackdropCarousel } from "./BackdropCarousel";
+import ExtraDetails from "./ExtraDetails";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -346,18 +347,6 @@ export default function MovieDetails() {
               {movie.overview}
             </p>
           </div>
-          <p className="font-semibold text-xl">Keywords</p>
-
-          <div className="flex items-start gap-1 flex-wrap">
-            {movieKeywords.map((item) => (
-              <span
-                className="border border-slate-50/10 px-2 py-1 text-sm rounded-sm"
-                key={item.id}
-              >
-                {item.name}
-              </span>
-            ))}
-          </div>
 
           <div>
             <span className="px-2 text-black rounded-sm bg-yellow-500">
@@ -389,12 +378,14 @@ export default function MovieDetails() {
         {relatedMovies.length > 0 && (
           <MovieCategoryName title={"Recommendations"} />
         )}
-        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 text-white">
+        <div className="grid grid-cols-4 lg:grid-cols-5 gap-2 text-white">
           {relatedMovies.map((relatedMovie) => (
             <Card key={relatedMovie.id} movie={relatedMovie} />
           ))}
         </div>
       </div>
+
+      <ExtraDetails movie={movie} Bg={Bg} textColor1={textColor1} movieKeywords={movieKeywords} />
     </>
   );
 }
