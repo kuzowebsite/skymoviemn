@@ -1,6 +1,19 @@
 import React from "react";
+import { FiExternalLink } from "react-icons/fi";
 
 const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
+  function redirectServer1() {
+    const formattedTitle = movie.title.replace(/ /g, "+");
+    const url = `https://www.jalshamoviez.delhi.in/mobile/search?find=${formattedTitle}&per_page=1`;
+    window.open(url, "_blank");
+  }
+
+  function redirectServer2() {
+    const formattedTitle = movie.title.replace(/ /g, "+");
+    const url = `https://www.filmyfly.durban/site-1.html?to-search=${formattedTitle}`;
+    window.open(url, "_blank");
+  }
+
   return (
     <div
       style={{ background: `${Bg}`, color: `${textColor1}` }}
@@ -35,20 +48,40 @@ const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
       </div>
       <div>
         <p className="font-semibold text-md">Budget</p>
-        {new Intl.NumberFormat("en-IN", {
-          style: "currency",
-          currency: "INR",
-        }).format(movie.budget)}
+        <p className="text-xs">
+          {new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+          }).format(movie.budget)}
+        </p>
       </div>
 
       <div>
         <p className="font-semibold text-md">Revenue</p>
-        {new Intl.NumberFormat("en-IN", {
-          style: "currency",
-          currency: "INR",
-        }).format(movie.revenue)}
+        <p className="text-xs">
+          {new Intl.NumberFormat("en-IN", {
+            style: "currency",
+            currency: "INR",
+          }).format(movie.revenue)}
+        </p>
       </div>
-
+      <div>
+        <p className="font-semibold text-md">Download</p>
+        <div className="flex gap-1 mt-2">
+          <button
+            onClick={redirectServer1}
+            className="border border-slate-50/10 px-2 py-1 rounded-l-md text-sm flex items-center gap-2"
+          >
+            jalshamoviez <FiExternalLink />
+          </button>
+          <button
+            onClick={redirectServer2}
+            className="border border-slate-50/10 px-2 py-1 rounded-r-md text-sm flex items-center gap-2"
+          >
+            filmyfly <FiExternalLink />
+          </button>
+        </div>
+      </div>
       <div className="flex flex-col">
         <p className="font-semibold text-md mb-2">Keywords</p>
         <div className="flex items-start gap-1 flex-wrap">
