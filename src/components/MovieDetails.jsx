@@ -378,7 +378,7 @@ export default function MovieDetails() {
         {relatedMovies.length > 0 && (
           <MovieCategoryName title={"Recommendations"} />
         )}
-        <div className="grid grid-cols-4 lg:grid-cols-5 gap-2 text-white">
+        <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 text-white">
           {relatedMovies.map((relatedMovie) => (
             <Card key={relatedMovie.id} movie={relatedMovie} />
           ))}

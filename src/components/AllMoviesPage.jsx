@@ -130,7 +130,7 @@ const MoviesPage = () => {
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       <MovieCategoryName title={url} />
-      <div className="grid grid-cols-4 lg:grid-cols-5 gap-2 text-white">
+      <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 text-white">
         {movies.length > 0
           ? movies.map((movie) => <Card key={movie.id} movie={movie} />)
           : !loading && <p>No movies found.</p>}

@@ -38,7 +38,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
           />
         </NavLink>
       </div>
-      <div className="text-zinc-50 my-2">
+      {/* <div className="text-zinc-50 my-2">
         <h1
           className="text-base sm:text-md lg:text-md overflow-hidden text-ellipsis whitespace-nowrap font-semibold"
           title={title}
@@ -48,7 +48,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
         <p className="text-xs text-zinc-500">
           {release_date !== "N/A" ? release_date.split("-")[0] : first_air_date}
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

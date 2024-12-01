@@ -9,12 +9,12 @@ export function Carousel({ movies }) {
 
   return (
     <Swiper
-      spaceBetween={5}
+      spaceBetween={7}
       slidesPerView={5}
       className="mySwiper"
       watchSlidesProgress={true}
       breakpoints={{
-        320: { slidesPerView: 2.5 },
+        320: { slidesPerView: 3.5 },
         640: { slidesPerView: 4.5 },
         768: { slidesPerView: 5.5 },
         1024: { slidesPerView: 6.5 },
