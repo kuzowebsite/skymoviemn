@@ -3,7 +3,7 @@ import { FaGithub, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-zinc-900 text-white py-8 px-4">
+    <footer className="bg-zinc-900 text-white py-8 px-4 ">
       <div className="container mx-auto flex flex-col items-center justify-center space-y-4">
         {/* Icons */}
         <div className="flex space-x-6">

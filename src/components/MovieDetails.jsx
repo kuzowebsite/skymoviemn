@@ -8,6 +8,8 @@ import { MdBookmarkAdded } from "react-icons/md";
 import { MdBookmark } from "react-icons/md";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
+
 import {
   Drawer,
   DrawerClose,
@@ -31,10 +33,11 @@ import { Skeleton } from "./ui/skeleton";
 import { getDominantColor } from "@/lib/Color";
 import { getTextColorForBackground } from "@/lib/TextColor";
 import MovieCategoryName from "./MovieCategoryName";
-import { toast } from "react-toastify";
 import { CastCarousel } from "./CastCarousel";
 import { BackdropCarousel } from "./BackdropCarousel";
 import ExtraDetails from "./ExtraDetails";
+import { useNavigate } from "react-router-dom";
+
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -53,6 +56,7 @@ export default function MovieDetails() {
   const [hasMovie, setHasMovie] = useState(false);
   const apiKey = import.meta.env.VITE_API_KEY;
   const searchSuffix = "site:filmyzilla.com.by";
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,12 +88,13 @@ export default function MovieDetails() {
           text: `${movie.title}(${movie.release_date}) : ${movie.overview}\n By Ranjan`,
           url: window.location.href,
         });
-        console.log("Movie shared successfully");
       } catch (error) {
-        toast.error(error);
+        toast(error);
       }
     } else {
-      toast.error("Sharing is not supported in your browser");
+      toast("Sharing not supported", {
+        description: "Your browser does not support sharing api",
+      });
     }
   };
 
@@ -132,12 +137,16 @@ export default function MovieDetails() {
         ]);
 
         const movieData = await movieRes.json();
+        if(movieData.status_code==34){
+          toast("Movie not found")
+          return <h1>NOt ofund</h1>
+        }
         const relatedMoviesData = await relatedRes.json();
         const castData = await creditRes.json();
         const trailerData = await trailerRes.json();
         const backdropData = await backdropRes.json();
         const keywordData = await keywordsRes.json();
-
+    
         setMovie(movieData);
         setRelatedMovies(relatedMoviesData.results);
         setCredits(castData.cast);
@@ -164,7 +173,11 @@ export default function MovieDetails() {
         }
       } catch (error) {
         console.error(error);
-        toast.error(`Error: ${error.message}`);
+
+        toast(error, {
+          description: `${error.message}`,
+        });
+
         setLoading(false);
       }
     };
@@ -177,10 +190,23 @@ export default function MovieDetails() {
     if (!existingPlaylist.includes(id)) {
       existingPlaylist.push(id);
       localStorage.setItem("playlist", JSON.stringify(existingPlaylist));
-      toast.success("Added to watchlist");
+
+      toast("Added to watchlist", {
+        action: {
+          label: "View",
+          onClick: () => navigate("/watchlist"),
+        },
+      });
+
       setHasMovie(true);
     } else {
-      toast.error("Already Added");
+      toast("Already added !", {
+        description: "You have already added this movie",
+        action: {
+          label: "View",
+          onClick: () => navigate("/watchlist"),
+        },
+      });
     }
   };
 
@@ -349,10 +375,8 @@ export default function MovieDetails() {
           </div>
 
           <div>
-            <span className="px-2 text-black rounded-sm bg-yellow-500">
-              IMDB
-            </span>{" "}
-            <span className=""> {Math.round(movie.vote_average)}/10</span>
+            <span className="px-2 text-black rounded-sm bg-white">Score</span>{" "}
+            <span className=""> {Math.round(movie.vote_average * 10)}%</span>
           </div>
         </div>
         <div
@@ -385,7 +409,12 @@ export default function MovieDetails() {
         </div>
       </div>
 
-      <ExtraDetails movie={movie} Bg={Bg} textColor1={textColor1} movieKeywords={movieKeywords} />
+      <ExtraDetails
+        movie={movie}
+        Bg={Bg}
+        textColor1={textColor1}
+        movieKeywords={movieKeywords}
+      />
     </>
   );
 }

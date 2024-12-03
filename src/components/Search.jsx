@@ -2,22 +2,22 @@ import * as React from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { NavLink } from "react-router-dom";
-import { toast } from "react-toastify";
+import { NavLink, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function Search() {
   const [open, setOpen] = React.useState(false);
   const [suggestions, setSuggestions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const [focusedIndex, setFocusedIndex] = React.useState(-1);
   const apiKey = import.meta.env.VITE_API_KEY;
+  const navigate = useNavigate(); // Navigate hook
 
   // Fetch movies with the fetch API
   const fetchMovies = async (query) => {
@@ -35,13 +35,18 @@ export default function Search() {
       );
 
       if (!response.ok) {
-        toast.error("Something went wrong");
+        toast("Something went wrong");
+        return;
       }
 
       const data = await response.json();
-      setSuggestions(data.results || []);
+      // Filter out movies without images
+      const moviesWithImages = (data.results || []).filter(
+        (movie) => movie.poster_path
+      );
+      setSuggestions(moviesWithImages);
     } catch (error) {
-      toast.error(`Error: ${error.message}`);
+      toast(`Error: ${error.message}`);
       console.error("Error fetching movies:", error);
       setSuggestions([]);
     } finally {
@@ -54,6 +59,27 @@ export default function Search() {
     const newQuery = e.target.value;
     setQuery(newQuery);
     fetchMovies(newQuery);
+  };
+
+  // Handle keyboard navigation and selection
+  const handleKeyDown = (e) => {
+    if (suggestions.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setFocusedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setFocusedIndex((prev) => Math.max(prev - 1, 0));
+    } else if (e.key === "Enter" && focusedIndex >= 0) {
+      e.preventDefault();
+      const selectedMovie = suggestions[focusedIndex];
+      if (selectedMovie) {
+        console.log("Selected movie:", selectedMovie.title);
+        navigate(`/movie/${selectedMovie.id}`); // Navigate to the selected movie
+        setOpen(false); // Close dialog on selection
+      }
+    }
   };
 
   // Keyboard shortcut to toggle dialog
@@ -75,9 +101,9 @@ export default function Search() {
         <DialogTrigger asChild>
           <div
             onClick={() => setOpen(true)}
-            className=" hover:bg-zinc-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800 bg-zinc-900/60 px-2 flex items-center justify-between py-1"
+            className="hover:bg-zinc-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800 bg-zinc-900/60 px-2 flex items-center justify-between py-1"
           >
-            <p className=" ml-1 lg:ml-3 text-sm text-zinc-500">
+            <p className="ml-1 lg:ml-3 text-sm text-zinc-500">
               Search movies...
             </p>
           </div>
@@ -87,34 +113,35 @@ export default function Search() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Movie Search</DialogTitle>
-            {/* <DialogDescription>Type to search for a movie</DialogDescription> */}
           </DialogHeader>
           <Input
             type="text"
             placeholder="Type a movie name..."
             value={query}
             onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
             className="w-full mt-2 mb-2"
           />
 
           {suggestions.length === 0 ? (
             <p className="text-center text-gray-500">No results found.</p>
           ) : (
-            <div className="mt-2 max-h-60 overflow-y-auto">
-              {suggestions.map((movie) => {
-                const posterUrl = movie.poster_path
-                  ? `https://image.tmdb.org/t/p/w92${movie.poster_path}` // Poster image URL
-                  : "https://via.placeholder.com/92"; // Default image if no poster
-
+            <div className="mt-2 max-h-72 overflow-y-auto">
+              {suggestions.map((movie, index) => {
+                const posterUrl = `https://image.tmdb.org/t/p/w92${movie.poster_path}`;
                 const releaseYear = movie.release_date
-                  ? new Date(movie.release_date).getFullYear() // Extract year from release date
+                  ? new Date(movie.release_date).getFullYear()
                   : "N/A";
+
+                const isFocused = index === focusedIndex;
 
                 return (
                   <NavLink
                     to={`/movie/${movie.id}`}
                     key={movie.id}
-                    className="p-1 mt-1 hover:bg-zinc-800 cursor-pointer flex items-center  rounded-md"
+                    className={`p-1 mt-1 flex items-center rounded-md ${
+                      isFocused ? "bg-zinc-800" : "hover:bg-zinc-800"
+                    }`}
                     onClick={() => {
                       console.log("Selected movie:", movie.title);
                       setOpen(false); // Close dialog on selection

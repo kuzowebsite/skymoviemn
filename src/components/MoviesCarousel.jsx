@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { MovieSkeleton } from "./MovieSkeletion";
 import { Carousel } from "./Carousel";
 import MovieCategoryName from "./MovieCategoryName";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
-const fetchWithTimeout = async (url, options = {}, timeout = 15000) => {
+const fetchWithTimeout = async (url, options = {}, timeout = 25000) => {
   return Promise.race([
     fetch(url, options),
     new Promise((_, reject) =>
@@ -34,7 +34,7 @@ export default function MovieCarousel() {
       const errorMessage =
         "API Key is missing. Ensure VITE_API_KEY is defined.";
       console.error(errorMessage);
-      toast.error(errorMessage);
+      toast(errorMessage);
       setError(errorMessage);
       setLoading(false);
       return;
@@ -89,7 +89,7 @@ export default function MovieCarousel() {
           if (!response.ok) {
             const errorMessage = `Failed to fetch ${key} movies: ${response.statusText}`;
             console.error(errorMessage);
-            toast.error(`Error fetching ${key} movies.`);
+            toast(`Error fetching ${key} movies.`);
             throw new Error(errorMessage);
           }
 
@@ -97,7 +97,7 @@ export default function MovieCarousel() {
           return { key, data: data.results || [] };
         } catch (err) {
           console.error(`Error fetching ${key} movies:`, err);
-          toast.error(err.message || `Error fetching ${key} movies.`);
+          toast(err.message || `Error fetching ${key} movies.`);
           return { key, data: [] };
         }
       });
@@ -112,7 +112,7 @@ export default function MovieCarousel() {
     } catch (globalError) {
       const errorMessage = "Error fetching movie data. Please try again.";
       console.error(errorMessage, globalError);
-      toast.error(errorMessage);
+      toast(errorMessage);
       setError(errorMessage);
     } finally {
       setLoading(false);

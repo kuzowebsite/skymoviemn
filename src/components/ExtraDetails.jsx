@@ -46,25 +46,34 @@ const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
         <p className="font-semibold text-md">Status</p>
         <p className="text-xs">{movie.status}</p>
       </div>
-      <div>
-        <p className="font-semibold text-md">Budget</p>
-        <p className="text-xs">
-          {new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR",
-          }).format(movie.budget)}
-        </p>
-      </div>
 
-      <div>
-        <p className="font-semibold text-md">Revenue</p>
-        <p className="text-xs">
-          {new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR",
-          }).format(movie.revenue)}
-        </p>
-      </div>
+      {movie.budget ? (
+        <div>
+          <p className="font-semibold text-md">Budget</p>
+          <p className="text-xs">
+            {new Intl.NumberFormat("en-IN", {
+              style: "currency",
+              currency: "INR",
+            }).format(movie.budget)}
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
+
+      {movie.revenue ? (
+        <div>
+          <p className="font-semibold text-md">Revenue</p>
+          <p className="text-xs">
+            {new Intl.NumberFormat("en-IN", {
+              style: "currency",
+              currency: "INR",
+            }).format(movie.revenue)}
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
       <div>
         <p className="font-semibold text-md">Download</p>
         <div className="flex gap-1 mt-2">
@@ -82,19 +91,23 @@ const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col">
-        <p className="font-semibold text-md mb-2">Keywords</p>
-        <div className="flex items-start gap-1 flex-wrap">
-          {movieKeywords.map((item) => (
-            <p
-              className="border border-slate-50/10 px-2 py-1 text-xs rounded-sm"
-              key={item.id}
-            >
-              {item.name}
-            </p>
-          ))}
+      {movieKeywords.length > 0 ? (
+        <div className="flex flex-col">
+          <p className="font-semibold text-md mb-2">Keywords</p>
+          <div className="flex items-start gap-1 flex-wrap">
+            {movieKeywords.map((item) => (
+              <p
+                className="border border-slate-50/10 px-2 py-1 text-xs rounded-sm"
+                key={item.id}
+              >
+                {item.name}
+              </p>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

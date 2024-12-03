@@ -16,8 +16,8 @@ export function BackdropCarousel({ backdrops }) {
         type: "fraction",
       }}
       autoplay={{
-        delay: 2000,
-        disableOnInteraction: false,
+        delay: 3000,
+        disableOnInteraction: true,
       }}
       slidesPerView={3}
       navigation={true}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
 
 import Card from "./Card";
@@ -25,7 +25,6 @@ const MoviesPage = () => {
   const [error, setError] = useState(null);
   const [pageUrl, setPageUrl] = useState(null);
   const [year, setYear] = useState(new Date().getFullYear());
- 
 
   const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -98,7 +97,7 @@ const MoviesPage = () => {
       setTotalPages(data.total_pages || 1);
     } catch (err) {
       setError(err.message);
-      toast.error(err.message);
+      toast(err.message);
     } finally {
       setLoading(false);
     }
@@ -141,15 +140,24 @@ const MoviesPage = () => {
           <PaginationPrevious
             onClick={() => handlePageChange(page - 1)}
             disabled={page === 1 || loading}
+            style={{cursor:'pointer'}}
           >
             Previous
           </PaginationPrevious>
           <PaginationContent>
-            {page} / {totalPages}
+            {page} /{" "}
+            <div
+              onClick={() => handlePageChange(totalPages)}
+              style={{ cursor: "pointer" }}
+              title="Go to the last page"
+            >
+              {totalPages}
+            </div>
           </PaginationContent>
           <PaginationNext
             onClick={() => handlePageChange(page + 1)}
             disabled={page === totalPages || loading}
+            style={{cursor:'pointer'}}
           >
             Next
           </PaginationNext>
