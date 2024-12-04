@@ -97,7 +97,7 @@ const MoviesPage = () => {
       setTotalPages(data.total_pages || 1);
     } catch (err) {
       setError(err.message);
-      toast(err.message);
+      toast(err.message,{type:"error"});
     } finally {
       setLoading(false);
     }

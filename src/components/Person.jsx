@@ -4,6 +4,7 @@ import { Carousel } from "./Carousel";
 import MovieCategoryName from "./MovieCategoryName";
 import { MdArrowBack } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 const Person = () => {
   const { id } = useParams();
@@ -47,7 +48,7 @@ const Person = () => {
   }, [id, apiKey]);
 
   if (loading) {
-    return <div className="w-full text-center p-10">Loading...</div>;
+    return <Loader color={"gray"} loading={true} size={20} />
   }
 
   if (error) {

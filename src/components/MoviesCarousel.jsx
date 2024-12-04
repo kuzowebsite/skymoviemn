@@ -34,7 +34,10 @@ export default function MovieCarousel() {
       const errorMessage =
         "API Key is missing. Ensure VITE_API_KEY is defined.";
       console.error(errorMessage);
-      toast(errorMessage);
+      toast("Api Error",{
+        type:"error",
+        description:errorMessage,
+      });
       setError(errorMessage);
       setLoading(false);
       return;
@@ -44,7 +47,7 @@ export default function MovieCarousel() {
     
       {
         key: "Top Hindi Action Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&with_genres=28&primary_release_year=${year}`,
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&with_genres=28&primary_release_year=${year}&sort_by=primary_release_date.asc`,
       },
   
       {
@@ -53,11 +56,11 @@ export default function MovieCarousel() {
       },
       {
         key: "Highest Rated Hindi Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&sort_by=vote_average.desc&vote_count.gte=100`,
+        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&sort_by=vote_average.desc&vote_count.gte=100&sort_by=primary_release_date.asc`,
       },
       {
         key: "Sci-Fi Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_genres=878&primary_release_year=${year}`,
+        url: `/discover/movie?api_key=${apiKey}&with_genres=878&primary_release_year=${year}&sort_by=primary_release_date.asc`,
       },
       {
         key: "Trending Movies Today",
@@ -89,7 +92,10 @@ export default function MovieCarousel() {
           if (!response.ok) {
             const errorMessage = `Failed to fetch ${key} movies: ${response.statusText}`;
             console.error(errorMessage);
-            toast(`Error fetching ${key} movies.`);
+            toast("Network Error",{
+              description:`Error fetching ${key} movies`,
+              type:"error"
+            });
             throw new Error(errorMessage);
           }
 
@@ -97,7 +103,10 @@ export default function MovieCarousel() {
           return { key, data: data.results || [] };
         } catch (err) {
           console.error(`Error fetching ${key} movies:`, err);
-          toast(err.message || `Error fetching ${key} movies.`);
+          toast(`Error fetching ${key} movies.`,{
+            description: err.message,
+            type:"error"
+          });
           return { key, data: [] };
         }
       });
@@ -112,7 +121,11 @@ export default function MovieCarousel() {
     } catch (globalError) {
       const errorMessage = "Error fetching movie data. Please try again.";
       console.error(errorMessage, globalError);
-      toast(errorMessage);
+      toast(errorMessage,{
+        description: "Somthing went wrong with network",
+        type: "error",
+
+      });
       setError(errorMessage);
     } finally {
       setLoading(false);

@@ -37,10 +37,13 @@ import { CastCarousel } from "./CastCarousel";
 import { BackdropCarousel } from "./BackdropCarousel";
 import ExtraDetails from "./ExtraDetails";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 
 export default function MovieDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [movie, setMovie] = useState(null);
   const [relatedMovies, setRelatedMovies] = useState([]);
   const [credits, setCredits] = useState([]);
@@ -48,15 +51,16 @@ export default function MovieDetails() {
   const [movieKeywords, setKeywords] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Track drawer state
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [Bg, setBg] = useState("");
-  const [BgOpacity, setBgOpacity] = useState("");
-  const [textColor1, setTextColor] = useState("white"); // Default text color
+  const [Bg, setBgColor] = useState("");
+  const [bgOpacity, setBgOpacity] = useState("");
+  const [textColor1, setTextColor] = useState("white");
   const [hasMovie, setHasMovie] = useState(false);
+  const [error, setError] = useState(null);
+
   const apiKey = import.meta.env.VITE_API_KEY;
   const searchSuffix = "site:filmyzilla.com.by";
-  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -67,49 +71,20 @@ export default function MovieDetails() {
     setHasMovie(playlist.includes(Number(id)));
   }, [id]);
 
-  const handleConfirm = () => {
-    if (movie?.title) {
-      setDialogOpen(false);
-      const searchQuery = `${movie.title} ${searchSuffix}`;
-      const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(
-        searchQuery
-      )}`;
-      window.open(googleSearchUrl, "_blank");
-    }
-  };
-  const handleCancel = () => {
-    setDialogOpen(false);
-  };
-  const handleShare = async () => {
-    if (navigator.share && movie) {
-      try {
-        await navigator.share({
-          title: movie.title,
-          text: `${movie.title}(${movie.release_date}) : ${movie.overview}\n By Ranjan`,
-          url: window.location.href,
-        });
-      } catch (error) {
-        toast(error);
-      }
-    } else {
-      toast("Sharing not supported", {
-        description: "Your browser does not support sharing api",
-      });
-    }
-  };
-
-  const convertMinutesToTime = (minutes) => {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${hours > 0 ? `${hours}h` : ""} ${
-      remainingMinutes > 0 ? `${remainingMinutes}m` : ""
-    }`.trim();
-  };
-
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
         setLoading(true);
+ 
+        const urls = [
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`,
+          `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}`,
+          `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`,
+          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`,
+          `https://api.themoviedb.org/3/movie/${id}/images?api_key=${apiKey}`,
+          `https://api.themoviedb.org/3/movie/${id}/keywords?api_key=${apiKey}`,
+        ];
+
         const [
           movieRes,
           relatedRes,
@@ -117,67 +92,44 @@ export default function MovieDetails() {
           trailerRes,
           backdropRes,
           keywordsRes,
-        ] = await Promise.all([
-          fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`),
-          fetch(
-            `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}`
-          ),
-          fetch(
-            `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`
-          ),
-          fetch(
-            `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`
-          ),
-          fetch(
-            `https://api.themoviedb.org/3/movie/${id}/images?api_key=${apiKey}`
-          ),
-          fetch(
-            `https://api.themoviedb.org/3/movie/${id}/keywords?api_key=${apiKey}`
-          ),
-        ]);
+        ] = await Promise.all(urls.map(fetchWithErrorHandling));
 
-        const movieData = await movieRes.json();
-        if(movieData.status_code==34){
-          toast("Movie not found")
-          return <h1>NOt ofund</h1>
+        if (movieRes.status_code === 34) {
+          throw new Error("Movie not found");
         }
-        const relatedMoviesData = await relatedRes.json();
-        const castData = await creditRes.json();
-        const trailerData = await trailerRes.json();
-        const backdropData = await backdropRes.json();
-        const keywordData = await keywordsRes.json();
-    
-        setMovie(movieData);
-        setRelatedMovies(relatedMoviesData.results);
-        setCredits(castData.cast);
-        setBackdrops(backdropData);
-        setKeywords(keywordData.keywords);
-        const imageUrl = `https://image.tmdb.org/t/p/w500/${movieData.poster_path}?not-from-cache-please`;
-        getDominantColor(imageUrl)
-          .then((rgb) => {
-            let cl = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
-            let clOpacity = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]},0.7)`;
-            setBg(cl);
-            setBgOpacity(clOpacity);
-            const textColor = getTextColorForBackground(rgb);
-            setTextColor(textColor);
-            setLoading(false);
-          })
-          .catch(console.error);
 
-        const trailers = trailerData.results.filter(
+        setMovie(movieRes);
+        setRelatedMovies(relatedRes.results || []);
+        setCredits(creditRes.cast || []);
+        setBackdrops(backdropRes || []);
+        setKeywords(keywordsRes.keywords || []);
+
+        const imageUrl = `https://image.tmdb.org/t/p/w500/${movieRes.poster_path}?not-from-cache-please`;
+        try {
+          const rgb = await getDominantColor(imageUrl);
+          const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+          const opacityColor = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.7)`;
+
+          setBgColor(color);
+          setBgOpacity(opacityColor);
+          setTextColor(getTextColorForBackground(rgb));
+        } catch (colorError) {
+          console.error("Error fetching dominant color:", colorError);
+        }
+
+        const trailers = trailerRes.results.filter(
           (video) => video.type === "Trailer" && video.site === "YouTube"
         );
+
         if (trailers.length > 0) {
           setTrailer(`https://www.youtube.com/embed/${trailers[0].key}`);
         }
+
+        setLoading(false);
       } catch (error) {
-        console.error(error);
-
-        toast(error, {
-          description: `${error.message}`,
-        });
-
+        console.error("Error fetching movie data:", error);
+        toast.error(error.message || "An error occurred while fetching data");
+        setError(error.message);
         setLoading(false);
       }
     };
@@ -185,57 +137,83 @@ export default function MovieDetails() {
     fetchMovieData();
   }, [id, apiKey]);
 
-  const handleAddPlayList = (id) => {
-    const existingPlaylist = JSON.parse(localStorage.getItem("playlist")) || [];
-    if (!existingPlaylist.includes(id)) {
-      existingPlaylist.push(id);
-      localStorage.setItem("playlist", JSON.stringify(existingPlaylist));
+  const fetchWithErrorHandling = async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    return await response.json();
+  };
 
-      toast("Added to watchlist", {
-        action: {
-          label: "View",
-          onClick: () => navigate("/watchlist"),
-        },
-      });
+  const handleConfirm = () => {
+    if (movie?.title) {
+      setDialogOpen(false);
+      const searchQuery = `${movie.title} ${searchSuffix}`;
+      window.open(
+        `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`,
+        "_blank"
+      );
+    }
+  };
+  const handleCancel = () => {
+    setDialogOpen(false);
+  };
+  const handleShare = async () => {
+    if (!movie) {
+      toast.warn("No movie data available to share.");
+      return;
+    }
 
-      setHasMovie(true);
-    } else {
-      toast("Already added !", {
-        description: "You have already added this movie",
-        action: {
-          label: "View",
-          onClick: () => navigate("/watchlist"),
-        },
-      });
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: movie.title,
+          text: `${movie.title} (${movie.release_date}): ${movie.overview}\nBy Ranjan`,
+          url: window.location.href,
+        });
+        toast.success("Movie shared successfully!");
+      } else {
+        const details = `${movie.title} (${movie.release_date}): ${movie.overview}\nURL: ${window.location.href}\nBy Ranjan`;
+        await navigator.clipboard.writeText(details);
+        toast.info("Details copied to clipboard!");
+      }
+    } catch (error) {
+      toast.error(`Failed to share: ${error.message}`);
     }
   };
 
-  if (loading)
-    return (
-      <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-2 p-5 lg:py-8  text-white">
-        <div className="relative flex justify-center items-center rounded-lg bg-cover bg-center">
-          <Skeleton className="w-full h-80 rounded-lg" />
-        </div>
+  const handleAddPlayList = (id) => {
+    const playlist = JSON.parse(localStorage.getItem("playlist")) || [];
+    if (playlist.includes(id)) {
+      toast.warn("Movie already in watchlist.", {
+        action: {
+          label: "View",
+          onClick: () => navigate("/watchlist"),
+        },
+      });
+      return;
+    }
 
-        <div className="relative z-10 flex flex-col gap-3 col-span-2">
-          <div className="flex flex-col">
-            <Skeleton className="w-3/4 h-8 mb-3" />
-            <Skeleton className="w-2/3 h-6" />
-          </div>
-          <div className="my-5 flex items-center gap-2">
-            <Skeleton className="w-10 h-10 rounded-full" />
-            <Skeleton className="w-10 h-10 rounded-full" />
-            <Skeleton className="h-10 w-32 rounded-full" />
-          </div>
-          <div className="mt-5">
-            <Skeleton className="w-3/4 h-6 mb-2" />
-            <Skeleton className="w-full h-4" />
-          </div>
-        </div>
-        <div className="absolute inset-0 w-full h-full -z-5"></div>
-      </div>
-    );
+    playlist.push(id);
+    localStorage.setItem("playlist", JSON.stringify(playlist));
+    toast.success(`${movie.title} added to watchlist!`, {
+      action: {
+        label: "View",
+        onClick: () => navigate("/watchlist"),
+      },
+    });
+    setHasMovie(true);
+  };
 
+  const convertMinutesToTime = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours > 0 ? `${hours}h` : ""} ${remainingMinutes > 0 ? `${remainingMinutes}m` : ""}`.trim();
+  };
+
+  if (loading) return <Loader color={Bg||"gray"} loading={true} size={20} />
+  if (error) return <div className="flex items-center justify-center h-screen text-2xl text-orange-500"> {error} </div>;
+ 
   return (
     <>
       <div

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import MovieCategoryName from "./MovieCategoryName";
 import { toast } from "sonner";
+import Loader from "./Loader";
 
 
 const Playlist = () => {
@@ -27,7 +28,7 @@ const Playlist = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching movie data:", error);
-        toast(error);
+        toast(error,{type:"error"});
         setLoading(false);
       }
     };
@@ -41,10 +42,13 @@ const Playlist = () => {
     const newPlaylist = updatedPlaylist.filter((movieId) => movieId !== id);
     localStorage.setItem("playlist", JSON.stringify(newPlaylist)); // Update local storage
     setMovies(movies.filter((movie) => movie.id !== id)); // Update state to re-render
-    toast("Removed from watchlist");
+    toast("Removed from watchlist",{
+      type: "success",
+      
+    });
   };
 
-  if (loading) return <p className="p-5" >Loading your playlist...</p>;
+  if (loading) return <Loader color={"gray"} loading={true} size={20} />;
 
   return (
     <div className="p-5">

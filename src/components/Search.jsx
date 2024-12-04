@@ -35,7 +35,7 @@ export default function Search() {
       );
 
       if (!response.ok) {
-        toast("Something went wrong");
+        toast("Something went wrong", { type: "error" });
         return;
       }
 
@@ -46,7 +46,10 @@ export default function Search() {
       );
       setSuggestions(moviesWithImages);
     } catch (error) {
-      toast(`Error: ${error.message}`);
+      toast("Failed to fetch", {
+        type: "error",
+        description: error.message,
+      });
       console.error("Error fetching movies:", error);
       setSuggestions([]);
     } finally {
