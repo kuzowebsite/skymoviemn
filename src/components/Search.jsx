@@ -104,7 +104,7 @@ export default function Search() {
         <DialogTrigger asChild>
           <div
             onClick={() => setOpen(true)}
-            className="hover:bg-zinc-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800 bg-zinc-900/60 px-2 flex items-center justify-between py-1"
+            className="hover:bg-zinc-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800  bg-gradient-to-l from-zinc-900/50 to-black/50 px-2 flex items-center justify-between py-1"
           >
             <p className="ml-1 lg:ml-3 text-sm text-zinc-500">
               Search movies...
@@ -129,7 +129,7 @@ export default function Search() {
           {suggestions.length === 0 ? (
             <p className="text-center text-gray-500">No results found.</p>
           ) : (
-            <div className="mt-2 max-h-72 overflow-y-auto">
+            <div className="mt-2 max-h-64 overflow-y-auto">
               {suggestions.map((movie, index) => {
                 const posterUrl = `https://image.tmdb.org/t/p/w92${movie.poster_path}`;
                 const releaseYear = movie.release_date

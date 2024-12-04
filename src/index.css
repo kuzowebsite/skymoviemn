@@ -101,9 +101,6 @@ body {
   min-height: 100vh;
 }
 .hero {
-  /* From Uiverse.io by qhns3 */
-
-  /* background: #000000; */
   --gap: 5em;
   --line: 1px;
   --color: rgba(132, 115, 115, 0.2);
@@ -125,6 +122,52 @@ body {
 .content {
   flex: 1;
 }
+
+/* Adjust the Google Translate dropdown container */
+#google_translate_element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Restyle the dropdown to fit your design */
+.goog-te-gadget .goog-te-gadget-simple {
+  border-radius: 50px; 
+  overflow: hidden;
+
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+
+.goog-te-gadget .goog-te-gadget-simple span {
+  display: none !important;
+}
+
+/* Remove the border and padding inside the dropdown */
+.goog-te-menu-value {
+  padding: 0 !important;
+  border: none !important;
+  color: inherit !important;
+  font-size: inherit !important;
+}
+
+/* Center-align the dropdown text */
+.goog-te-menu-value span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Remove any additional box shadows */
+.goog-te-gadget-simple {
+  box-shadow: none !important;
+}
+
 
 @media (width<=500px) {
   .bgOpacity {

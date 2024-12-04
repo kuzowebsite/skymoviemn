@@ -185,7 +185,8 @@ export default function MovieDetails() {
   const handleAddPlayList = (id) => {
     const playlist = JSON.parse(localStorage.getItem("playlist")) || [];
     if (playlist.includes(id)) {
-      toast.warn("Movie already in watchlist.", {
+      toast("Movie already in watchlist.", {
+        type: "warning",
         action: {
           label: "View",
           onClick: () => navigate("/watchlist"),

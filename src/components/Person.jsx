@@ -19,6 +19,21 @@ const Person = () => {
   };
   const apiKey = import.meta.env.VITE_API_KEY;
 
+
+  const calculateAge = (birthDate) => {
+    const birthDateObj = new Date(birthDate);
+    const today = new Date();
+    let age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDifference = today.getMonth() - birthDateObj.getMonth();
+
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+      age--;
+    }
+
+    return age;
+  };
+
+
   useEffect(() => {
     const fetchMovieData = async () => {
       try {
@@ -61,7 +76,7 @@ const Person = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_auto] gap-5 p-5 lg:py-8 bg-zinc-900 ">
+      <div className="grid grid-cols-1 lg:grid-cols-[300px_auto] gap-5 p-5 lg:py-8 bg-gradient-to-l from-zinc-900 to-black ">
         <div>
           <img
             src={`https://image.tmdb.org/t/p/w500/${person.profile_path}`}
@@ -72,7 +87,7 @@ const Person = () => {
         <div className="flex flex-col gap-2 items-start">
           <div
             onClick={goBack}
-            className="flex items-center p-2 px-4 gap-2 cursor-pointer  bg-zinc-800 rounded-sm "
+            className="flex items-center  gap-2 cursor-pointer  "
           >
             <MdArrowBack />
             Back To Main
@@ -83,8 +98,8 @@ const Person = () => {
           </p>
 
           <p>
-            <strong>Born:</strong> {person.birthday}{" "}
-            {person.place_of_birth && `in ${person.place_of_birth}`}
+            <strong>Born:</strong> {person.birthday}  ({calculateAge(person.birthday)} Years)
+             {person.place_of_birth && ` in ${person.place_of_birth} `}
           </p>
         </div>
       </div>
