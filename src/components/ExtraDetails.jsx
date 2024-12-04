@@ -4,13 +4,18 @@ import { FiExternalLink } from "react-icons/fi";
 const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
   function redirectServer1() {
     const formattedTitle = movie.title.replace(/ /g, "+");
-    const url = `https://www.jalshamoviez.delhi.in/mobile/search?find=${formattedTitle}&per_page=1`;
+    const url = `https://www.jalshamoviez.er.in/mobile/search?find=${formattedTitle}&per_page=1`;
     window.open(url, "_blank");
   }
 
   function redirectServer2() {
     const formattedTitle = movie.title.replace(/ /g, "+");
-    const url = `https://www.filmyfly.durban/site-1.html?to-search=${formattedTitle}`;
+    const url = `https://ww2.filmyfly.earth/site-1.html?to-search=${formattedTitle}`;
+    window.open(url, "_blank");
+  }
+  function redirectServer3() {
+    const formattedTitle = movie.title.replace(/ /g, "+");
+    const url = `https://bollyflix.meme/search/${formattedTitle}`;
     window.open(url, "_blank");
   }
 
@@ -81,13 +86,19 @@ const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
             onClick={redirectServer1}
             className="border border-slate-50/10 px-2 py-1 rounded-l-md text-sm flex items-center gap-2"
           >
-            jalshamoviez <FiExternalLink />
+            Jalshamoviez <FiExternalLink />
           </button>
           <button
             onClick={redirectServer2}
             className="border border-slate-50/10 px-2 py-1 rounded-r-md text-sm flex items-center gap-2"
           >
-            filmyfly <FiExternalLink />
+            Filmyfly <FiExternalLink />
+          </button>
+          <button
+            onClick={redirectServer3}
+            className="border border-slate-50/10 px-2 py-1 rounded-r-md text-sm flex items-center gap-2"
+          >
+            Bollyflix <FiExternalLink />
           </button>
         </div>
       </div>
