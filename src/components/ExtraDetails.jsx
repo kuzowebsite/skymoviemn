@@ -81,22 +81,22 @@ const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
       )}
       <div>
         <p className="font-semibold text-md">Download</p>
-        <div className="flex gap-1 mt-2">
+        <div className="flex  mt-2">
           <button
             onClick={redirectServer1}
-            className="border border-slate-50/10 px-2 py-1 rounded-l-md text-sm flex items-center gap-2"
+            className="border border-slate-50/10 px-2 py-1 rounded-l-md text-xs flex items-center gap-2"
           >
             Jalshamoviez <FiExternalLink />
           </button>
           <button
             onClick={redirectServer2}
-            className="border border-slate-50/10 px-2 py-1 rounded-r-md text-sm flex items-center gap-2"
+            className="border border-slate-50/10 px-2 py-1  text-xs flex items-center gap-2"
           >
             Filmyfly <FiExternalLink />
           </button>
           <button
             onClick={redirectServer3}
-            className="border border-slate-50/10 px-2 py-1 rounded-r-md text-sm flex items-center gap-2"
+            className="border border-slate-50/10 px-2 py-1 rounded-r-md text-xs flex items-center gap-2"
           >
             Bollyflix <FiExternalLink />
           </button>

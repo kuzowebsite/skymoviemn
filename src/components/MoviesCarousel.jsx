@@ -149,7 +149,7 @@ export default function MovieCarousel() {
       ) : (
         <div className="container mx-auto px-4 py-1 ">
           {Object.entries(movies).map(([key, movieList]) => (
-            <div className="border-b border-zinc-800 pb-4" key={key}>
+            <div className="border-b border-zinc-800 pb-4 " key={key}>
               <MovieCategoryName
                 title={key.replace(/^\w/, (c) => c.toUpperCase())}
                 linkTo={`/movies/${key}`}

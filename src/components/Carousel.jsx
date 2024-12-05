@@ -14,7 +14,7 @@ export function Carousel({ movies }) {
       className="mySwiper"
       watchSlidesProgress={true}
       breakpoints={{
-        320: { slidesPerView: 3.5 },
+        320: { slidesPerView: 2.5 },
         640: { slidesPerView: 4.5 },
         768: { slidesPerView: 5.5 },
         1024: { slidesPerView: 6.5 },

@@ -39,7 +39,7 @@ const Landing = () => {
         Latest Movie
         <RiArrowRightLine className=" mt-[2px]" />
       </button>
-      <div className="absolute bottom-0 w-full h-5 bg-zinc-950/60"></div>
+      {/* <div className="absolute bottom-0 w-full h-5 bg-zinc-950/60"></div> */}
     </section>
   );
 };

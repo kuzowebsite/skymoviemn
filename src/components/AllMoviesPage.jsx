@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useSearchParams } from "react-router-dom";
-
 import Card from "./Card";
 import MovieCategoryName from "./MovieCategoryName";
 import {
@@ -14,6 +13,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import Loader from "./Loader";
 
 const MoviesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -126,7 +126,7 @@ const MoviesPage = () => {
 
   return (
     <div className="p-4">
-      {loading && <p>Loading...</p>}
+      {loading && <Loader color={"gray"} loading={true} size={20} />}
       {error && <p style={{ color: "red" }}>{error}</p>}
       <MovieCategoryName title={url} />
       <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 text-white">
