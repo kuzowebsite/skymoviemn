@@ -43,25 +43,34 @@ export default function MovieCarousel() {
       return;
     }
 
-    const endpoints = [
+    function getFormattedDate() {
+      const date = new Date(); 
+      const year = date.getFullYear(); 
+      const month = String(date.getMonth() + 1).padStart(2, "0"); 
+      const day = String(date.getDate()).padStart(2, "0");
     
-      {
-        key: "Top Hindi Action Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&with_genres=28&primary_release_year=${year}&sort_by=primary_release_date.asc`,
-      },
-  
-      {
-        key: "Top Tamil Action Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=te&with_genres=28&primary_release_year=${year}`,
-      },
-      {
-        key: "Highest Rated Hindi Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&sort_by=vote_average.desc&vote_count.gte=100&sort_by=primary_release_date.asc`,
-      },
+      return `${year}-${month}-${day}`; 
+    }
+
+    const endpoints = [
       {
         key: "Sci-Fi Movies",
-        url: `/discover/movie?api_key=${apiKey}&with_genres=878&primary_release_year=${year}&sort_by=primary_release_date.asc`,
+        url: `/discover/movie?api_key=${apiKey}&sort_by=revenue.desc&with_genres=878`,
       },
+      {
+        key: "Tamil Action Movies",
+        url: `/discover/movie?api_key=${apiKey}&sort_by=revenue.desc&with_original_language=te&with_genres=28}`,
+      },
+      {
+        key: "Popular Hindi Movies",
+        url: `/discover/movie?api_key=${apiKey}&sort_by=popularity.desc&with_original_language=hi&region=IN`,
+      },
+      {
+        key: "Movies Near You",
+        url: `/discover/movie?api_key=${apiKey}&sort_by=release_date.desc&with_original_language=hi&region=IN&release_date.lte=${getFormattedDate()}`,
+      },
+  
+    
       {
         key: "Trending Movies Today",
         url: `/trending/movie/day`,
@@ -149,7 +158,7 @@ export default function MovieCarousel() {
       ) : (
         <div className="container mx-auto px-4 py-1 ">
           {Object.entries(movies).map(([key, movieList]) => (
-            <div className="border-b border-zinc-800 pb-4 " key={key}>
+            <div className="pb-4 " key={key}>
               <MovieCategoryName
                 title={key.replace(/^\w/, (c) => c.toUpperCase())}
                 linkTo={`/movies/${key}`}

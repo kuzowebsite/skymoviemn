@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { GoSearch } from "react-icons/go";
 
 export default function Search() {
   const [open, setOpen] = React.useState(false);
@@ -104,11 +105,9 @@ export default function Search() {
         <DialogTrigger asChild>
           <div
             onClick={() => setOpen(true)}
-            className="hover:bg-zinc-800 w-full lg:w-80 cursor-pointer rounded-md border border-zinc-800  bg-gradient-to-l from-zinc-900/50 to-black/50 px-2 flex items-center justify-between py-1"
+            
           >
-            <p className="ml-1 lg:ml-3 text-sm text-zinc-500">
-              Search movies...
-            </p>
+           <GoSearch size={20}/>
           </div>
         </DialogTrigger>
 

@@ -34,7 +34,7 @@ export function BackdropCarousel({ backdrops }) {
         <SwiperSlide key={i}>
           <LazyLoadImage
             className="aspect-video w-full"
-            src={`https://image.tmdb.org/t/p/w500/${backdrop.file_path}`}
+            src={`https://image.tmdb.org/t/p/original/${backdrop.file_path}`}
             alt={backdrop.id}
             effect="blur"
           />

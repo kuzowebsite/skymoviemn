@@ -1,11 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Card from "./Card";
-import { FaDownload } from "react-icons/fa";
-import { FaPlay } from "react-icons/fa";
-import { FaShareAlt } from "react-icons/fa";
-import { MdBookmarkAdded } from "react-icons/md";
-import { MdBookmark } from "react-icons/md";
+import { GoHeart ,GoHeartFill,GoShare ,GoDownload,GoPlay    } from "react-icons/go";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -104,7 +100,7 @@ export default function MovieDetails() {
         setBackdrops(backdropRes || []);
         setKeywords(keywordsRes.keywords || []);
 
-        const imageUrl = `https://image.tmdb.org/t/p/w500/${movieRes.poster_path}?not-from-cache-please`;
+        const imageUrl = `https://image.tmdb.org/t/p/original/${movieRes.poster_path}?not-from-cache-please`;
         try {
           const rgb = await getDominantColor(imageUrl);
           const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
@@ -219,7 +215,7 @@ export default function MovieDetails() {
     <>
       <div
         style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/w780/${movie.backdrop_path})`,
+          backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           color: `${textColor1}`,
@@ -235,14 +231,14 @@ export default function MovieDetails() {
 
         <img
           className="w-1/3 z-20 relative rounded-md"
-          src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+          src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
           alt={movie.title}
         />
       </div>
 
       <div
         style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/w780/${movie.backdrop_path})`,
+          backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`,
           backgroundSize: "cover",
           color: `${textColor1}`,
         }}
@@ -273,7 +269,7 @@ export default function MovieDetails() {
                 className="w-10 h-10 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer"
                 onClick={() => setDialogOpen(true)} // Open the dialog when this div is clicked
               >
-                <FaDownload />
+                <GoDownload  />
               </div>
 
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -300,13 +296,13 @@ export default function MovieDetails() {
               }}
               className="w-10 h-10 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer"
             >
-              {hasMovie ? <MdBookmarkAdded /> : <MdBookmark />}
+              {hasMovie ? <GoHeartFill /> : <GoHeart />}
             </div>
             <div
               onClick={handleShare}
               className="w-10 h-10 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer"
             >
-              <FaShareAlt />
+              <GoShare />
             </div>
             <div className=" h-10 px-4 gap-2 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer">
               <Drawer>
@@ -315,7 +311,7 @@ export default function MovieDetails() {
                   onClick={() => setIsDrawerOpen(true)} // Set drawer state when triggered
                 >
                   {" "}
-                  <FaPlay />
+                  <GoPlay  />
                   Play Trailer
                 </DrawerTrigger>
                 <DrawerContent>

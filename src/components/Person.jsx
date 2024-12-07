@@ -79,7 +79,7 @@ const Person = () => {
       <div className="grid grid-cols-1 lg:grid-cols-[300px_auto] gap-5 p-5 lg:py-8 bg-gradient-to-l from-zinc-900 to-black ">
         <div>
           <img
-            src={`https://image.tmdb.org/t/p/w500/${person.profile_path}`}
+            src={`https://image.tmdb.org/t/p/original/${person.profile_path}`}
             alt={person.name}
             className="w-full rounded"
           />

@@ -10,7 +10,7 @@ const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
 
   function redirectServer2() {
     const formattedTitle = movie.title.replace(/ /g, "+");
-    const url = `https://ww2.filmyfly.earth/site-1.html?to-search=${formattedTitle}`;
+    const url = `https://www.filmyfly.durban/site-1.html?to-search=${formattedTitle}`;
     window.open(url, "_blank");
   }
   function redirectServer3() {

@@ -32,7 +32,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
         <NavLink to={`/movie/${id}`}>
           <LazyLoadImage
             className="h-auto w-full rounded-md cursor-pointer"
-            src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+            src={`https://image.tmdb.org/t/p/original/${poster_path}`}
             alt={title}
             effect="blur"
           />

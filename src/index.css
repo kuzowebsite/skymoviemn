@@ -82,6 +82,14 @@ body {
   background-color: transparent;
 }
 
+
+.truncate-lines {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
 .swiper-button-prev::after,
 .swiper-button-next::after {
   color: rgb(0, 0, 0);
@@ -100,25 +108,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
 }
-.hero {
-  --gap: 5em;
-  --line: 1px;
-  --color: rgba(132, 115, 115, 0.2);
 
-  background-image: linear-gradient(
-      -90deg,
-      transparent calc(var(--gap) - var(--line)),
-      var(--color) calc(var(--gap) - var(--line) + 1px),
-      var(--color) var(--gap)
-    ),
-    linear-gradient(
-      0deg,
-      transparent calc(var(--gap) - var(--line)),
-      var(--color) calc(var(--gap) - var(--line) + 1px),
-      var(--color) var(--gap)
-    );
-  background-size: var(--gap) var(--gap);
-}
 .content {
   flex: 1;
 }
@@ -143,6 +133,20 @@ body {
   transition: background-color 0.3s, border-color 0.3s;
 }
 
+/* Custom styles for the pagination bullets */
+.custom-bullet {
+  height: 3rem; /* h-8 */
+  width: 3rem;  /* w-8 */
+  border-radius: 9999px; /* rounded-full */
+  border: 2px solid white;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.custom-bullet.swiper-pagination-bullet-active {
+  background-color: white;
+  transform: scale(1.2); /* Optional: scale effect for the active bullet */
+}
 
 .goog-te-gadget .goog-te-gadget-simple span {
   display: none !important;

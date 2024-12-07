@@ -28,49 +28,51 @@ const MoviesPage = () => {
 
   const apiKey = import.meta.env.VITE_API_KEY;
 
+  function getFormattedDate() {
+    const date = new Date(); 
+    const year = date.getFullYear(); 
+    const month = String(date.getMonth() + 1).padStart(2, "0"); 
+    const day = String(date.getDate()).padStart(2, "0");
+  
+    return `${year}-${month}-${day}`; 
+  }
+
   const endpoints = [
+  
     {
-      key: "Latest Hindi Movie Releases",
-      url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&primary_release_year=${year}`,
+      key: "Movies Near You",
+      url: `/discover/movie?api_key=${apiKey}&sort_by=release_date.desc&with_original_language=hi&region=IN&release_date.lte=${getFormattedDate()}`,
+    },
+
+    {
+      key: "Tamil Action Movies",
+      url: `/discover/movie?api_key=${apiKey}&sort_by=revenue.desc&with_original_language=te&with_genres=28}`,
     },
     {
-      key: "Top Hindi Action Movies",
-      url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&with_genres=28`,
-    },
-    {
-      key: "Latest Tamil Movie Releases",
-      url: `/discover/movie?api_key=${apiKey}&with_original_language=te&primary_release_year=${year}`,
-    },
-    {
-      key: "Top Tamil Action Movies",
-      url: `/discover/movie?api_key=${apiKey}&with_original_language=te&with_genres=28`,
-    },
-    {
-      key: "Highest Rated Hindi Movies",
-      url: `/discover/movie?api_key=${apiKey}&with_original_language=hi&region=IN&sort_by=vote_average.desc&vote_count.gte=100`,
+      key: "Popular Hindi Movies",
+      url: `/discover/movie?api_key=${apiKey}&sort_by=popularity.desc&with_original_language=hi&region=IN`,
     },
     {
       key: "Sci-Fi Movies",
-      url: `/discover/movie?api_key=${apiKey}&with_genres=878`,
+      url: `/discover/movie?api_key=${apiKey}&sort_by=revenue.desc&with_genres=878`,
     },
     {
       key: "Trending Movies Today",
-      url: `/trending/movie/day?api_key=${apiKey}`,
+      url: `/trending/movie/day`,
     },
     {
       key: "Most Popular Movies",
-      url: `/movie/popular?api_key=${apiKey}`,
+      url: `/movie/popular`,
     },
     {
       key: "Top Rated Movies Globally",
-      url: `/movie/top_rated?api_key=${apiKey}`,
+      url: `/movie/top_rated`,
     },
     {
       key: "Upcoming Movie Releases",
-      url: `/movie/upcoming?api_key=${apiKey}`,
+      url: `/movie/upcoming`,
     },
   ];
-
   // Dynamically fetch the URL for the selected endpoint
   const getLinkTo = () => {
     const endpoint = endpoints.find((e) => e.key === url);
