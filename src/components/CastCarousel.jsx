@@ -37,7 +37,7 @@ export function CastCarousel({ persons }) {
             ) : (
               <LazyLoadImage
                 className="rounded-md"
-                src={`https://image.tmdb.org/t/p/original/${person.profile_path}`}
+                src={`https://image.tmdb.org/t/p/w500/${person.profile_path}`}
                 alt={person.name}
                 effect="blur"
               />

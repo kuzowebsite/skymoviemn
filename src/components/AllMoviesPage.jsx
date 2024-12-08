@@ -58,19 +58,19 @@ const MoviesPage = () => {
     },
     {
       key: "Trending Movies Today",
-      url: `/trending/movie/day`,
+      url: `/trending/movie/day?api_key=${apiKey}`,
     },
     {
       key: "Most Popular Movies",
-      url: `/movie/popular`,
+      url: `/movie/popular?api_key=${apiKey}`,
     },
     {
       key: "Top Rated Movies Globally",
-      url: `/movie/top_rated`,
+      url: `/movie/top_rated?api_key=${apiKey}`,
     },
     {
       key: "Upcoming Movie Releases",
-      url: `/movie/upcoming`,
+      url: `/movie/upcoming?api_key=${apiKey}`,
     },
   ];
   // Dynamically fetch the URL for the selected endpoint

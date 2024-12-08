@@ -100,7 +100,7 @@ export default function MovieDetails() {
         setBackdrops(backdropRes || []);
         setKeywords(keywordsRes.keywords || []);
 
-        const imageUrl = `https://image.tmdb.org/t/p/original/${movieRes.poster_path}?not-from-cache-please`;
+        const imageUrl = `https://image.tmdb.org/t/p/w500/${movieRes.poster_path}?not-from-cache-please`;
         try {
           const rgb = await getDominantColor(imageUrl);
           const color = `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
@@ -231,14 +231,14 @@ export default function MovieDetails() {
 
         <img
           className="w-1/3 z-20 relative rounded-md"
-          src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+          src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
           alt={movie.title}
         />
       </div>
 
       <div
         style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`,
+          backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.backdrop_path})`,
           backgroundSize: "cover",
           color: `${textColor1}`,
         }}
