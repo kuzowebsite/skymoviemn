@@ -38,7 +38,6 @@ const Landing = () => {
         const response = await fetch(apiUrl);
         const data = await response.json();
         setMovies(data.results);
-        console.log(data.results);
       } catch (error) {
         console.error("Error fetching movie data:", error);
       }
@@ -86,47 +85,50 @@ const Landing = () => {
         effect={"fade"}
         modules={[Pagination, EffectFade, Autoplay]}
       >
-        {movies.map((movie, i) => (
-          <SwiperSlide key={i} className="relative">
-            <div className="relative w-full h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh]">
-              <div className="absolute inset-0 bg-gradient-to-tr from-black via-black/90 via-40% to-transparent"></div>
-              <img
-                className="w-full h-full object-cover"
-                src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-                alt={movie.title}
-              />
-              <div className="absolute z-50 top-3/4 left-4 sm:left-6 md:left-8 lg:left-12 transform -translate-y-1/2 ">
-                <div>
-                  <p className="text-xs">
-                    {movie.original_language.toUpperCase()} |{" "}
-                    {movie.release_date.split("-")[0]} | {movie.original_title}
-                  </p>
-                  <h1 className="title text-3xl text-white lg:text-6xl font-bold">
-                    {movie.title}
-                  </h1>
-                  <p className="w-full text-sm text-gray-400 mt-1 sm:mt-2 lg:w-1/2 truncate-lines">
-                    {movie.overview}
-                  </p>
-                </div>
-                <div className="mt-4 sm:mt-6 md:mt-5 flex gap-2 ">
-                  <button
-                    onClick={() => fetchTrailer(movie.id)}
-                    className=" backdrop-blur-lg bg-black/10 flex items-center gap-1 border border-white px-3 py-2 rounded-sm hover:bg-white hover:text-black transition"
-                  >
-                    <GoPlay />{" "}
-                    <span className="hidden sm:inline">Watch Trailer</span>
-                  </button>
-                  <button
-                    onClick={() => redirect(movie.id)}
-                    className="backdrop-blur-lg bg-black/10 flex items-center gap-1 border border-white px-3 py-2 rounded-sm hover:bg-white hover:text-black transition"
-                  >
-                    <span className="">More</span>
-                  </button>
+        {movies.map((movie, i) =>
+          movie.backdrop_path ? (
+            <SwiperSlide key={i} className="relative">
+              <div className="relative w-full h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh]">
+                <div className="absolute inset-0 gr"></div>
+                <img
+                  className="w-full h-full object-cover"
+                  src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+                  alt={movie.title}
+                />
+                <div className="absolute z-50 top-3/4 left-4 sm:left-6 md:left-8 lg:left-12 transform -translate-y-1/2 ">
+                  <div>
+                    <p className="text-xs">
+                      {movie.original_language.toUpperCase()} |{" "}
+                      {movie.release_date.split("-")[0]} |{" "}
+                      {movie.original_title}
+                    </p>
+                    <h1 className="title text-3xl text-white lg:text-6xl font-bold">
+                      {movie.title}
+                    </h1>
+                    <p className="w-full text-sm text-gray-400 mt-1 sm:mt-2 lg:w-1/2 truncate-lines">
+                      {movie.overview}
+                    </p>
+                  </div>
+                  <div className="mt-4 sm:mt-6 md:mt-5 flex gap-2 ">
+                    <button
+                      onClick={() => fetchTrailer(movie.id)}
+                      className="backdrop-blur-lg bg-black/10 flex items-center gap-1 border border-white px-3 py-2 rounded-sm hover:bg-white hover:text-black transition"
+                    >
+                      <GoPlay />{" "}
+                      <span className="hidden sm:inline">Watch Trailer</span>
+                    </button>
+                    <button
+                      onClick={() => redirect(movie.id)}
+                      className="backdrop-blur-lg bg-black/10 flex items-center gap-1 border border-white px-3 py-2 rounded-sm hover:bg-white hover:text-black transition"
+                    >
+                      <span className="">More</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          ) : null
+        )}
       </Swiper>
 
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>

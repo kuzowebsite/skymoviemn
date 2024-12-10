@@ -14,10 +14,20 @@ const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
     window.open(url, "_blank");
   }
   function redirectServer3() {
-    const formattedTitle = movie.title.replace(/ /g, "+");
-    const url = `https://bollyflix.meme/search/${formattedTitle}`;
+    let searchSuffix = "site:filmyzilla.com.by";
+    const searchQuery = `${movie.title} ${searchSuffix}`;
+    const url = `https://www.google.com/search?q=${encodeURIComponent(
+      searchQuery
+    )}`;
     window.open(url, "_blank");
+
   }
+
+  // function redirectServer3() {
+  //   const formattedTitle = movie.title.replace(/ /g, "+");
+  //   const url = `https://bollyflix.meme/search/${formattedTitle}`;
+  //   window.open(url, "_blank");
+  // }
 
   return (
     <div
@@ -98,7 +108,7 @@ const ExtraDetails = ({ movie, Bg, textColor1, movieKeywords }) => {
             onClick={redirectServer3}
             className="border border-slate-50/10 px-2 py-1 rounded-r-md text-xs flex items-center gap-2"
           >
-            Bollyflix <FiExternalLink />
+            FilmyZilla <FiExternalLink />
           </button>
         </div>
       </div>

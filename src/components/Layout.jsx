@@ -11,7 +11,7 @@ const Layout = () => {
       <div className="content mt-[50px]">
         <Outlet />
       </div>
-<Navigation/>
+      <Navigation />
       <Footer />
     </div>
   );

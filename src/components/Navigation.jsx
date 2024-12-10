@@ -35,19 +35,19 @@ const Navigation = () => {
     >
       <div className="grid grid-cols-3 items-center w-full h-full justify-center">
         <NavLink to="/" className="inline h-full">
-          <div className="flex items-center justify-center gap-1 flex-col lg:hover:bg-slate-900 h-full cursor-pointer">
+          <div className="flex items-center justify-center gap-1 flex-col lg:hover:bg-zinc-700/50 h-full cursor-pointer">
             <GoHome size={25} />
             <span className="text-xs text-slate-400">Home</span>
           </div>
         </NavLink>
 
-        <div className="flex items-center justify-center gap-1 flex-col lg:hover:bg-slate-900 h-full cursor-pointer">
-          <Search  />
+        <div className="flex items-center justify-center gap-1 flex-col lg:hover:bg-zinc-700/50 h-full cursor-pointer">
+          <Search size={25} />
           <span className="text-xs text-slate-400">Search</span>
         </div>
 
         <NavLink to="/watchlist" className="inline h-full">
-          <div className="flex items-center justify-center gap-1 flex-col lg:hover:bg-slate-900 h-full cursor-pointer">
+          <div className="flex items-center justify-center gap-1 flex-col lg:hover:bg-zinc-700/50 h-full cursor-pointer">
             <GoHeart size={25} />
             <span className="text-xs text-slate-400">Favorite</span>
           </div>

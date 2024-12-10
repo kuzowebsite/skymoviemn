@@ -1,21 +1,18 @@
-import React, { useEffect } from "react";
+
 import { FaGithub, FaEnvelope, FaWhatsapp ,FaLinkedin} from "react-icons/fa";
 import { SiBuymeacoffee } from "react-icons/si";
 
-
-import logo from "../assets/logoflix.svg";
-
 const Footer = () => {
   return (
-    <footer class="bg-white rounded-lg shadow dark:bg-zinc-900 m-4">
-      <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
-        <div class="sm:flex sm:items-center sm:justify-between">
+    <footer className="bg-gradient-to-r from-gray-800/80 via-gray-900/80 to-black/80">
+      <div className="w-full max-w-screen-xl mx-auto p-5 md:py-8">
+        <div className="sm:flex sm:items-center sm:justify-between">
           <a
             href="https://linktr.ee/ranjankashyap"
-            class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+            className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
-            <img src="https://i.ibb.co/Z2M7rLd/profile-pic-2.png" class="h-8" alt="Rflix Logo" />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <img src="https://i.ibb.co/Z2M7rLd/profile-pic-2.png" className="h-8" alt="Rflix Logo" />
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
               Ranjan 
             </span>
           </a>
@@ -61,10 +58,10 @@ const Footer = () => {
             </a>
           </div>
         </div>
-        <hr class="my-6 border-zinc-200 sm:mx-auto dark:border-zinc-700 lg:my-8" />
-        <span class="block text-sm text-zinc-500 sm:text-center dark:text-zinc-400">
+        <hr className="my-6 border-zinc-200 sm:mx-auto dark:border-zinc-700 lg:my-8" />
+        <span className="block text-sm text-zinc-500 sm:text-center dark:text-zinc-400">
           © {new Date().getFullYear()}{" "}
-          <a href="https://flowbite.com/" class="hover:underline">
+          <a href="https://flowbite.com/" className="hover:underline">
             Ranjan
           </a>
           . All Rights Reserved.

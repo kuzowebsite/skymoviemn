@@ -7,6 +7,7 @@ import Playlist from "./components/Playlist";
 import Person from "./components/Person";
 import MoviesPage from "./components/AllMoviesPage";
 import NotFoundPage from "./components/NotFoundPage";
+import Guide from "./components/Guide";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/person/:id" element={<Person />} />
           <Route path="/movies/:url" element={<MoviesPage />} />
           <Route path="/watchlist" element={<Playlist />} />
+          <Route path="/guide" element={<Guide />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

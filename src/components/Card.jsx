@@ -12,7 +12,6 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
     release_date = "N/A",
     vote_average = 2,
     id,
-    first_air_date = "",
     name = "No Name",
   } = movie;
 

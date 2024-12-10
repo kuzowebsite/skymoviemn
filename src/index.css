@@ -113,27 +113,12 @@ body {
   flex: 1;
 }
 
-/* Adjust the Google Translate dropdown container */
-#google_translate_element {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+.gr{
+  background: linear-gradient(200deg, transparent 50%, #000000 100%),
+  linear-gradient(200deg, transparent 30%, #000000 100%),
+  linear-gradient(200deg, transparent 10%, #000000 100%);
 }
-
-/* Restyle the dropdown to fit your design */
-.goog-te-gadget .goog-te-gadget-simple {
-  border-radius: 50px; 
-  overflow: hidden;
-
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
-}
-
-/* Custom styles for the pagination bullets */
 .custom-bullet {
   height: 3rem; /* h-8 */
   width: 3rem;  /* w-8 */
@@ -148,28 +133,8 @@ body {
   transform: scale(1.2); /* Optional: scale effect for the active bullet */
 }
 
-.goog-te-gadget .goog-te-gadget-simple span {
-  display: none !important;
-}
-
-/* Remove the border and padding inside the dropdown */
-.goog-te-menu-value {
-  padding: 0 !important;
-  border: none !important;
-  color: inherit !important;
-  font-size: inherit !important;
-}
-
-/* Center-align the dropdown text */
-.goog-te-menu-value span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Remove any additional box shadows */
-.goog-te-gadget-simple {
-  box-shadow: none !important;
+.filterscroll::-webkit-scrollbar{
+  display: none;
 }
 
 

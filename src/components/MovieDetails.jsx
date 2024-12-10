@@ -1,9 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import Card from "./Card";
-import { GoHeart ,GoHeartFill,GoShare ,GoDownload,GoPlay    } from "react-icons/go";
+import {
+  GoHeart,
+  GoHeartFill,
+  GoShare,
+  GoDownload,
+  GoPlay,
+} from "react-icons/go";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 import {
@@ -34,7 +40,6 @@ import { BackdropCarousel } from "./BackdropCarousel";
 import ExtraDetails from "./ExtraDetails";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
-
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -71,7 +76,7 @@ export default function MovieDetails() {
     const fetchMovieData = async () => {
       try {
         setLoading(true);
- 
+
         const urls = [
           `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`,
           `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}`,
@@ -144,9 +149,8 @@ export default function MovieDetails() {
   const handleConfirm = () => {
     if (movie?.title) {
       setDialogOpen(false);
-      const searchQuery = `${movie.title} ${searchSuffix}`;
       window.open(
-        `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`,
+        `https://bollyflix.meme/search/${movie.title.replace(/ /g, "+")}`,
         "_blank"
       );
     }
@@ -205,12 +209,20 @@ export default function MovieDetails() {
   const convertMinutesToTime = (minutes) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
-    return `${hours > 0 ? `${hours}h` : ""} ${remainingMinutes > 0 ? `${remainingMinutes}m` : ""}`.trim();
+    return `${hours > 0 ? `${hours}h` : ""} ${
+      remainingMinutes > 0 ? `${remainingMinutes}m` : ""
+    }`.trim();
   };
 
-  if (loading) return <Loader color={Bg||"gray"} loading={true} size={20} />
-  if (error) return <div className="flex items-center justify-center h-screen text-2xl text-orange-500"> {error} </div>;
- 
+  if (loading) return <Loader color={Bg || "gray"} loading={true} size={20} />;
+  if (error)
+    return (
+      <div className="flex items-center justify-center h-screen text-2xl text-orange-500">
+        {" "}
+        {error}{" "}
+      </div>
+    );
+
   return (
     <>
       <div
@@ -269,7 +281,7 @@ export default function MovieDetails() {
                 className="w-10 h-10 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer"
                 onClick={() => setDialogOpen(true)} // Open the dialog when this div is clicked
               >
-                <GoDownload  />
+                <GoDownload />
               </div>
 
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -277,14 +289,22 @@ export default function MovieDetails() {
                   <DialogHeader>
                     <DialogTitle>Confirm Redirect</DialogTitle>
                     <DialogDescription>
-                      You are being redirected to a new website. Do you want to
-                      continue?
-                      <span className="flex items-center justify-end mt-5 gap-2">
+                      You are about to leave this website and be redirected to a
+                      different site. Do you wish to proceed?
+                      <br />
+                      If you need assistance with downloading, check out our
+                      guide:   <NavLink
+                        className="text-blue-400 underline mt-2"
+                        to="/guide"
+                      >
+                        How to Download
+                      </NavLink>
+                      <div className="flex items-center justify-end mt-5 gap-2">
                         <Button onClick={handleCancel} variant="outline">
                           Cancel
                         </Button>
                         <Button onClick={handleConfirm}>Confirm</Button>
-                      </span>
+                      </div>
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
@@ -311,7 +331,7 @@ export default function MovieDetails() {
                   onClick={() => setIsDrawerOpen(true)} // Set drawer state when triggered
                 >
                   {" "}
-                  <GoPlay  />
+                  <GoPlay />
                   Play Trailer
                 </DrawerTrigger>
                 <DrawerContent>

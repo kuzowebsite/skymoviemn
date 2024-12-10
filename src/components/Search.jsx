@@ -11,7 +11,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { GoSearch } from "react-icons/go";
 
-export default function Search() {
+export default function Search({size}) {
   const [open, setOpen] = React.useState(false);
   const [suggestions, setSuggestions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -107,7 +107,7 @@ export default function Search() {
             onClick={() => setOpen(true)}
             
           >
-           <GoSearch size={20}/>
+           <GoSearch size={size}/>
           </div>
         </DialogTrigger>
 

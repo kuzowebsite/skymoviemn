@@ -65,12 +65,7 @@ export default function MovieCarousel() {
         key: "Popular Hindi Movies",
         url: `/discover/movie?api_key=${apiKey}&sort_by=popularity.desc&with_original_language=hi&region=IN`,
       },
-      {
-        key: "Movies Near You",
-        url: `/discover/movie?api_key=${apiKey}&sort_by=release_date.desc&with_original_language=hi&region=IN&release_date.lte=${getFormattedDate()}`,
-      },
   
-    
       {
         key: "Trending Movies Today",
         url: `/trending/movie/day`,
@@ -148,7 +143,7 @@ export default function MovieCarousel() {
   return (
     <div>
       {loading ? (
-        <div className="px-4 py-1">
+        <div className="px-4 mb-8 py-1">
           <MovieSkeleton />
         </div>
       ) : error ? (
