@@ -1,5 +1,6 @@
 import React from "react";
-import { MdOutlineCancel } from "react-icons/md";
+import { GoXCircle } from "react-icons/go";
+
 import { NavLink } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -23,7 +24,7 @@ const Card = ({ movie, onRemoveFromWatchlist, cancel }) => {
             onClick={() => onRemoveFromWatchlist(id)} // Call the remove function
             className=" absolute top-2 right-2 bg-zinc-900/50 p-2 rounded-full text-white hover:bg-zinc-950 z-20 "
           >
-            <MdOutlineCancel />
+            <GoXCircle />
           </button>
         ) : (
           ""

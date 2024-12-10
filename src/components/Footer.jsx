@@ -4,7 +4,7 @@ import { SiBuymeacoffee } from "react-icons/si";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-gray-800/80 via-gray-900/80 to-black/80">
+    <footer className="bg-zinc-950">
       <div className="w-full max-w-screen-xl mx-auto p-5 md:py-8">
         <div className="sm:flex sm:items-center sm:justify-between">
           <a

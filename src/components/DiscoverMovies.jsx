@@ -1,50 +1,58 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
 import {
   Select,
+  SelectTrigger,
   SelectContent,
   SelectItem,
-  SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import MovieCategoryName from "./MovieCategoryName";
 
 const DiscoverMovies = () => {
   const [movies, setMovies] = useState([]);
-  const [pages, setPages] = useState(1);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [filters, setFilters] = useState({
     sort_by: "popularity.desc",
     with_original_language: "en",
     with_genres: "28",
-    page: 1,
   });
 
-  const fetchMovies = async () => {
+  const fetchMovies = async (pageToFetch) => {
+    if (isLoading) return;
+
+    setIsLoading(true);
     const baseUrl = "https://api.themoviedb.org/3/discover/movie";
     const apiKey = import.meta.env.VITE_API_KEY;
 
-    // Construct query parameters
     const queryString = new URLSearchParams({
       api_key: apiKey,
+      page: pageToFetch,
       ...filters,
     }).toString();
 
     const url = `${baseUrl}?${queryString}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    setPages(data.total_pages);
-    setMovies(data.results || []);
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      setMovies((prevMovies) => [...prevMovies, ...data.results]);
+      setHasMore(pageToFetch < data.total_pages);
+    } catch (error) {
+      console.error("Failed to fetch movies:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // Fetch movies whenever filters change
   useEffect(() => {
-    fetchMovies();
+    // Reset movies and fetch the first page whenever filters change
+    setMovies([]);
+    setPage(1);
+    setHasMore(true);
+    fetchMovies(1);
   }, [filters]);
 
-  // Update filter function
   const updateFilter = (key, value) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -52,23 +60,25 @@ const DiscoverMovies = () => {
     }));
   };
 
+  const loadMoreMovies = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchMovies(nextPage);
+  };
+
   return (
-    <div className="p-4 mb-5 bg-gradient-to-r from-orange-500/20 to-red-500/20 ">
-      {/* <MovieCategoryName title="Discover" /> */}
-      <div className=" p-8 md:p-10 rounded-lg  text-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-          Unable to Find
+    <div className="p-4  bg-gradient-to-r from-cyan-900/20 to-purple-900/20 ">
+      <div className="p-5 rounded-lg text-center">
+        <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          Discover Movies
         </h1>
-        <p className="text-lg md:text-xl text-gray-300">
-          Try Using the Advanced Filter
-        </p>
       </div>
 
       {/* Filter Controls */}
-      <div className="grid grid-flow-col-dense lg:flex gap-2 my-3 overflow-x-auto filterscroll">
+      <div className="flex gap-2 my-3 ">
         <div>
           <Select onValueChange={(value) => updateFilter("sort_by", value)}>
-            <SelectTrigger className="">
+            <SelectTrigger>
               <SelectValue placeholder="Sort By" />
             </SelectTrigger>
             <SelectContent>
@@ -88,9 +98,7 @@ const DiscoverMovies = () => {
 
         <div>
           <Select
-            onValueChange={(value) =>
-              updateFilter("with_original_language", value)
-            }
+            onValueChange={(value) => updateFilter("with_original_language", value)}
           >
             <SelectTrigger>
               <SelectValue placeholder="Language" />
@@ -116,9 +124,11 @@ const DiscoverMovies = () => {
               <SelectItem value="nl">Dutch</SelectItem>
               <SelectItem value="sv">Swedish</SelectItem>
               <SelectItem value="th">Thai</SelectItem>
+              {/* Add other languages */}
             </SelectContent>
           </Select>
         </div>
+
         <div>
           <Select onValueChange={(value) => updateFilter("with_genres", value)}>
             <SelectTrigger>
@@ -144,49 +154,35 @@ const DiscoverMovies = () => {
               <SelectItem value="53">Thriller</SelectItem>
               <SelectItem value="10752">War</SelectItem>
               <SelectItem value="37">Western</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Select
-            onValueChange={(value) => updateFilter("page", Number(value))}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Page" />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from({ length: pages }, (_, i) => (
-                <SelectItem key={i + 1} value={String(i + 1)}>
-                  {i + 1}
-                </SelectItem>
-              ))}
+              {/* Add other genres */}
             </SelectContent>
           </Select>
         </div>
       </div>
 
       {/* Movie List */}
-      <Swiper
-        spaceBetween={7}
-        slidesPerView={5}
-        className="mySwiper"
-        watchSlidesProgress={true}
-        breakpoints={{
-          320: { slidesPerView: 2.5 },
-          640: { slidesPerView: 4.5 },
-          768: { slidesPerView: 5.5 },
-          1024: { slidesPerView: 6.5 },
-        }}
-      >
-        {movies.map((movie, i) =>
-          movie.poster_path ? (
-            <SwiperSlide key={i}>
-              <Card movie={movie} />
-            </SwiperSlide>
-          ) : null
-        )}
-      </Swiper>
+      <div className="grid grid-cols-4  lg:grid-cols-10 gap-2">
+        {movies.map((movie, i) => (
+          <Card key={i} movie={movie} />
+        ))}
+      </div>
+
+      {/* Load More Button */}
+      {hasMore && (
+        <div className="text-center mt-4">
+          <button
+            className="px-4 py-2 bg-gradient-to-r from-amber-900/40 to-red-900/40 border text-white rounded  disabled:opacity-50"
+            onClick={loadMoreMovies}
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Load More"}
+          </button>
+        </div>
+      )}
+
+      {!hasMore && (
+        <p className="text-center text-white mt-4">No more movies to display.</p>
+      )}
     </div>
   );
 };

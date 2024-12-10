@@ -25,7 +25,7 @@ export function CastCarousel({ persons }) {
     >
       {persons.map((person) => (
         <SwiperSlide key={person.id}>
-          <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg  bg-gradient-to-r from-zinc-950 to-black ">
+          <div className=" rounded-md p-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg   bg-gradient-to-l from-sky-900/20 to-voilet-900/20 rounded-t-x ">
             <NavLink to={`/person/${person.id}`}>
             {person.profile_path === null ? (
               <LazyLoadImage
