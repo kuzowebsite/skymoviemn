@@ -171,7 +171,7 @@ const DiscoverMovies = () => {
       {hasMore && (
         <div className="text-center mt-4">
           <button
-            className="px-4 py-2 bg-gradient-to-r from-amber-900/40 to-red-900/40 border text-white rounded  disabled:opacity-50"
+            className="px-4 py-2 bg-white text-black rounded  disabled:opacity-50"
             onClick={loadMoreMovies}
             disabled={isLoading}
           >
