@@ -29,7 +29,7 @@ const Navigation = () => {
 
   return (
     <div
-      className={`fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 rounded-t-lg border border-inherit bottom-0 left-1/2 bg-black/60 backdrop-blur-lg overflow-hidden transition-transform duration-300 ${
+      className={`fixed z-50 w-full h-16 max-w-lg -translate-x-1/2  lg:rounded-t-lg border border-inherit bottom-0 left-1/2 bg-black/60 backdrop-blur-lg overflow-hidden transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "translate-y-full"
       }`}
     >

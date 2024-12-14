@@ -67,7 +67,7 @@ const DiscoverMovies = () => {
   };
 
   return (
-    <div className="p-4  bg-gradient-to-r from-cyan-900/20 to-purple-900/20 ">
+    <div className="p-4  bg-gradient-to-r from-cyan-900/20 to-purple-900/20 rounded-t-lg">
       <div className="p-5 rounded-lg text-center">
         <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
           Discover Movies

@@ -185,7 +185,7 @@ export default function MovieDetails() {
   const handleAddPlayList = (id) => {
     const playlist = JSON.parse(localStorage.getItem("playlist")) || [];
     if (playlist.includes(id)) {
-      toast("Movie already in watchlist.", {
+      toast("Movie already in favorite.", {
         type: "warning",
         action: {
           label: "View",
@@ -197,7 +197,7 @@ export default function MovieDetails() {
 
     playlist.push(id);
     localStorage.setItem("playlist", JSON.stringify(playlist));
-    toast.success(`${movie.title} added to watchlist!`, {
+    toast.success(`${movie.title} added to favorite!`, {
       action: {
         label: "View",
         onClick: () => navigate("/watchlist"),

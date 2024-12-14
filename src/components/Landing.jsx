@@ -67,7 +67,7 @@ const Landing = () => {
   };
 
   return (
-    <section className="relative">
+    <section className="relative ">
       <Swiper
         pagination={{
           dynamicBullets: true,
@@ -88,10 +88,10 @@ const Landing = () => {
         {movies.map((movie, i) =>
           movie.backdrop_path ? (
             <SwiperSlide key={i} className="relative">
-              <div className="relative w-full h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh]">
+              <div className="relative w-full h-[50vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] rounded-b-lg overflow-hidden">
                 <div className="absolute inset-0 gr"></div>
                 <img
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover "
                   src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
                   alt={movie.title}
                 />
