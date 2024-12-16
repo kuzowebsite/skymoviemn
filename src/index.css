@@ -138,8 +138,3 @@ body {
 }
 
 
-@media (width<=500px) {
-  .bgOpacity {
-    opacity: 1 !important;
-  }
-}

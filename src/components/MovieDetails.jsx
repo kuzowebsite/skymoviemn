@@ -60,7 +60,7 @@ export default function MovieDetails() {
   const [textColor1, setTextColor] = useState("white");
   const [hasMovie, setHasMovie] = useState(false);
   const [error, setError] = useState(null);
-
+  const [percentage, setPercentage] = useState(100);
   const apiKey = import.meta.env.VITE_API_KEY;
   const searchSuffix = "site:filmyzilla.com.by";
 
@@ -72,6 +72,28 @@ export default function MovieDetails() {
     const playlist = JSON.parse(localStorage.getItem("playlist")) || [];
     setHasMovie(playlist.includes(Number(id)));
   }, [id]);
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Check if the device width is large or small
+      if (window.innerWidth >= 1024) {
+        // Assuming 1024px as the breakpoint for large devices
+        setPercentage(30); // Set to 30% for large devices
+      } else {
+        setPercentage(100); // Set to 100% for small devices
+      }
+    };
+
+    // Call handleResize on initial load and window resize
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -323,9 +345,7 @@ export default function MovieDetails() {
                       You are about to leave this website and be redirected to a
                       different site. Do you wish to proceed?
                       <br />
-                 
                       <div className="flex items-center justify-end mt-5 gap-2">
-              
                         <Button onClick={handleCancel} variant="outline">
                           Cancel
                         </Button>
@@ -410,7 +430,7 @@ export default function MovieDetails() {
           </div>
           <div className="flex flex-wrap items-start gap-y-1 py-4 px-2  mt-2 rounded-lg backdrop-blur-lg bg-black bg-opacity-5">
             {Object.entries(crew).map(([id, { name, jobs }]) => (
-              <div className="flex flex-col items-start text-start w-1/2 lg:w-1/3 xl:w-1/4">
+              <div key={id} className="flex flex-col items-start text-start w-1/2 lg:w-1/3 xl:w-1/4">
                 <NavLink to={`/person/${id}`}>
                   {" "}
                   <span className="text-md font-semibold">{name}</span>
@@ -422,10 +442,9 @@ export default function MovieDetails() {
         </div>
         <div
           style={{
-            background: `linear-gradient(to right, ${Bg} 30%, ${bgOpacity})`,
-           
+            background: `linear-gradient(to right, ${Bg} ${percentage}%, ${bgOpacity})`,
           }}
-          className=" absolute inset-0 w-full h-full -z-5"
+          className="bgOpacity absolute inset-0 w-full h-full -z-5"
         ></div>
       </div>
 
