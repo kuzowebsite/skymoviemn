@@ -103,7 +103,7 @@ export default function Search({size}) {
       {/* Dialog with Trigger Inside */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <div
+          <div className="cursor-pointer"
             onClick={() => setOpen(true)}
             
           >

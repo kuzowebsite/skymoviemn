@@ -48,6 +48,7 @@ export default function MovieDetails() {
   const [movie, setMovie] = useState(null);
   const [relatedMovies, setRelatedMovies] = useState([]);
   const [credits, setCredits] = useState([]);
+  const [crew, setCrew] = useState([]);
   const [backdrops, setBackdrops] = useState([]);
   const [movieKeywords, setKeywords] = useState([]);
   const [trailer, setTrailer] = useState(null);
@@ -99,6 +100,35 @@ export default function MovieDetails() {
           throw new Error("Movie not found");
         }
 
+        const combineJobsById = (creditRes) => {
+          // Define the important jobs
+          const importantJobs = [
+            "Director",
+            "Screenplay",
+            "Producer",
+            "Writer",
+            "Editor",
+            "Story",
+          ]; // Add more important jobs as needed
+
+          return creditRes.reduce((acc, member) => {
+            // Only process crew members with important jobs
+            if (importantJobs.includes(member.job)) {
+              if (acc[member.id]) {
+                acc[member.id].jobs.push(member.job);
+              } else {
+                acc[member.id] = {
+                  name: member.name,
+                  jobs: [member.job],
+                };
+              }
+            }
+            return acc;
+          }, {});
+        };
+
+        const combinedCrewData = combineJobsById(creditRes.crew);
+        setCrew(combinedCrewData);
         setMovie(movieRes);
         setRelatedMovies(relatedRes.results || []);
         setCredits(creditRes.cast || []);
@@ -250,13 +280,13 @@ export default function MovieDetails() {
 
       <div
         style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movie.backdrop_path})`,
+          backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`,
           backgroundSize: "cover",
           color: `${textColor1}`,
         }}
         className="relative grid grid-cols-1 lg:grid-cols-[300px_auto] gap-5 p-5  lg:py-8 "
       >
-        <div className=" relative flex justify-center items-center rounded-lg bg-cover bg-center shadow-md ">
+        <div className=" relative flex justify-start items-start rounded-lg bg-cover bg-center shadow-md ">
           <img
             className=" hidden lg:block relative z-10 lg:w-full h-auto w-full md:max-w-md lg:max-w-lg rounded-lg"
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
@@ -278,7 +308,8 @@ export default function MovieDetails() {
           <div className="my-1 flex items-center gap-2">
             <div>
               <div
-                className="w-10 h-10 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer"
+                style={{ background: textColor1, color: Bg }}
+                className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer"
                 onClick={() => setDialogOpen(true)} // Open the dialog when this div is clicked
               >
                 <GoDownload />
@@ -292,14 +323,9 @@ export default function MovieDetails() {
                       You are about to leave this website and be redirected to a
                       different site. Do you wish to proceed?
                       <br />
-                      If you need assistance with downloading, check out our
-                      guide:   <NavLink
-                        className="text-blue-400 underline mt-2"
-                        to="/guide"
-                      >
-                        How to Download
-                      </NavLink>
+                 
                       <div className="flex items-center justify-end mt-5 gap-2">
+              
                         <Button onClick={handleCancel} variant="outline">
                           Cancel
                         </Button>
@@ -314,17 +340,22 @@ export default function MovieDetails() {
               onClick={() => {
                 handleAddPlayList(movie.id);
               }}
-              className="w-10 h-10 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer"
+              style={{ background: textColor1, color: Bg }}
+              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer"
             >
               {hasMovie ? <GoHeartFill /> : <GoHeart />}
             </div>
             <div
+              style={{ background: textColor1, color: Bg }}
               onClick={handleShare}
-              className="w-10 h-10 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer"
+              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer"
             >
               <GoShare />
             </div>
-            <div className=" h-10 px-4 gap-2 rounded-full bg-zinc-50 text-zinc-900 flex items-center justify-center cursor-pointer">
+            <div
+              style={{ background: textColor1, color: Bg }}
+              className=" h-10 px-4 gap-2 rounded-full flex items-center justify-center cursor-pointer"
+            >
               <Drawer>
                 <DrawerTrigger
                   className="flex items-center gap-2"
@@ -370,16 +401,31 @@ export default function MovieDetails() {
           </div>
 
           <div>
-            <span className="px-2 text-black rounded-sm bg-white">Score</span>{" "}
-            <span className=""> {Math.round(movie.vote_average * 10)}%</span>
+            <span
+              style={{ background: textColor1, color: Bg }}
+              className="py-2 px-5  rounded-full text-sm"
+            >
+              Score | {Math.round(movie.vote_average * 10)}%
+            </span>
+          </div>
+          <div className="flex flex-wrap items-start gap-y-1 py-4 px-2  mt-2 rounded-lg backdrop-blur-lg bg-black bg-opacity-5">
+            {Object.entries(crew).map(([id, { name, jobs }]) => (
+              <div className="flex flex-col items-start text-start w-1/2 lg:w-1/3 xl:w-1/4">
+                <NavLink to={`/person/${id}`}>
+                  {" "}
+                  <span className="text-md font-semibold">{name}</span>
+                </NavLink>
+                <span className="text-xs">{jobs.join(", ")}</span>
+              </div>
+            ))}
           </div>
         </div>
         <div
           style={{
-            background: `${Bg}`,
-            opacity: ".95",
+            background: `linear-gradient(to right, ${Bg} 30%, ${bgOpacity})`,
+           
           }}
-          className="bgOpacity absolute inset-0 w-full h-full -z-5 backdrop-blur-md"
+          className=" absolute inset-0 w-full h-full -z-5"
         ></div>
       </div>
 
